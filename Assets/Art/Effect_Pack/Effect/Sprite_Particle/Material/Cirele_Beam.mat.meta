@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0834f6eddd125f64f9b8f32906a1f3b6
+timeCreated: 1519622162
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Effect/Sprite_Particle/Material/Cirele_Beam.mat
+  uploadId: 242703

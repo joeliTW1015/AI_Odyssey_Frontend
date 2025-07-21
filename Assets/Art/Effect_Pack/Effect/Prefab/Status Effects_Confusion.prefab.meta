@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ded7da80147a5bc498f885b3a07fb58b
+timeCreated: 1523253072
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Effect/Prefab/Status Effects_Confusion.prefab
+  uploadId: 242703

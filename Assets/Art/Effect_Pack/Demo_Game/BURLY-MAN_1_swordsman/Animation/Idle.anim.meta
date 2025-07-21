@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 299b5f32fe2b61a4c940daff5a7dc382
+timeCreated: 1516002098
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Demo_Game/BURLY-MAN_1_swordsman/Animation/Idle.anim
+  uploadId: 242703

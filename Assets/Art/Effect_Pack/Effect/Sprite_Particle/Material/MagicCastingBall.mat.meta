@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e98c6acb8803d2941ac336a5126e2811
+timeCreated: 1523249806
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Effect/Sprite_Particle/Material/MagicCastingBall.mat
+  uploadId: 242703

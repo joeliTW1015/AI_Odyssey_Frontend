@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 02cf5336f6b11124d945c8d15f1db605
+timeCreated: 1521524161
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Effect/Sprite_Particle/Material/Hit_punch_circle.mat
+  uploadId: 242703

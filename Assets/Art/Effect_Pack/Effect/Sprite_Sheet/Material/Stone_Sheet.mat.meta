@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2c04e7ee818ed4747bc01811e3f0d0d0
+timeCreated: 1521259343
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Effect/Sprite_Sheet/Material/Stone_Sheet.mat
+  uploadId: 242703

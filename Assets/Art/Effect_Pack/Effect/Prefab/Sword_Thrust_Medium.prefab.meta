@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f2f3ed7ad834cb34ea7c8e4945ceb5d0
+timeCreated: 1523253039
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Effect/Prefab/Sword_Thrust_Medium.prefab
+  uploadId: 242703

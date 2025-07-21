@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 02fae6f4903e2d74097324145dfbfd81
+timeCreated: 1523253036
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Effect/Prefab/Sword_Thrust_Small.prefab
+  uploadId: 242703

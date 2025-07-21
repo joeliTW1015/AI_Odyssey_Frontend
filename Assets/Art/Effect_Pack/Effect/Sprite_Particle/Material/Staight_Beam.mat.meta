@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8e1ddb97c5944994f8af740d219f9e7c
+timeCreated: 1519622162
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Effect/Sprite_Particle/Material/Staight_Beam.mat
+  uploadId: 242703

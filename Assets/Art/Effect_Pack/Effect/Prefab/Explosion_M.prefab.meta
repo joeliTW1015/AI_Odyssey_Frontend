@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e4a5f354cdac2d146a25921904f66303
+timeCreated: 1523253099
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Effect/Prefab/Explosion_M.prefab
+  uploadId: 242703

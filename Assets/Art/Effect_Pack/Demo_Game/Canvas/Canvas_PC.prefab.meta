@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bb70ea9cc78d0114f97fad3747a38513
+timeCreated: 1523338870
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Demo_Game/Canvas/Canvas_PC.prefab
+  uploadId: 242703

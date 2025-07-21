@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 73da133554aaea24db8e99eb5f20b056
+timeCreated: 1523253086
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Effect/Prefab/Arrow_Hit.prefab
+  uploadId: 242703

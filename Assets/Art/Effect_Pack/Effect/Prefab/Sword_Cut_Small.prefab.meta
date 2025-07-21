@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a0f02f93bbbcd824e9df4b90a7bc351f
+timeCreated: 1523253027
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Effect/Prefab/Sword_Cut_Small.prefab
+  uploadId: 242703

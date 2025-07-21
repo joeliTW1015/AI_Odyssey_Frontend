@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 41e8814b15c7c1d4dbee89480764beb4
+timeCreated: 1521532411
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Effect/Sprite_Particle/Material/Half_Circle.mat
+  uploadId: 242703

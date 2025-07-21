@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7c33d864855ff3d49828e4d6f39cb096
+timeCreated: 1523250419
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Effect/Sprite_Sheet/Material/MagicCasting.mat
+  uploadId: 242703

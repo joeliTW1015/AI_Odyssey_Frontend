@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1c88860e07c5ebb4286694145b7a3dd9
+timeCreated: 1521259343
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Effect/Sprite_Sheet/Material/Explosion_S_Fire.mat
+  uploadId: 242703

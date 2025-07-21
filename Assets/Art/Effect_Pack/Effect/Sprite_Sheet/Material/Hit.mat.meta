@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4fa877e6e762f9646b7a8adad0f309f2
+timeCreated: 1519622162
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Effect/Sprite_Sheet/Material/Hit.mat
+  uploadId: 242703

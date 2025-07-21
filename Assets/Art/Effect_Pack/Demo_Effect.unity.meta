@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7dec2e4d8c659f746a17819f916ba1e9
+timeCreated: 1520307937
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Demo_Effect.unity
+  uploadId: 242703

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1189d3c8ea221124180b387ceecb935d
+timeCreated: 1523253024
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Effect/Prefab/Hit_white_Large.prefab
+  uploadId: 242703

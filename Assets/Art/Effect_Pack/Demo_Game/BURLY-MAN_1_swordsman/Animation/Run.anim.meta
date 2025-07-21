@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 839c7d2d18e01f14e976919b417c626c
+timeCreated: 1516002752
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116228
+  packageName: '2D Toon FX : Basic'
+  packageVersion: 1.0
+  assetPath: Assets/Effect_Pack/Demo_Game/BURLY-MAN_1_swordsman/Animation/Run.anim
+  uploadId: 242703
