@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2725dae1db766084eaecf619dd536169
+timeCreated: 1522134752
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110512
+  packageName: Fantasy 2D Village NPC Character Pack
+  packageVersion: 1.2
+  assetPath: Assets/Village_Pack/0.DemoGameResource/Animation/[Demo]THIN-MAN_3_village-guard-NPC.controller
+  uploadId: 238652

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 879ca2498e8cb2340a284f855a07417f
+timeCreated: 1522225049
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110512
+  packageName: Fantasy 2D Village NPC Character Pack
+  packageVersion: 1.2
+  assetPath: Assets/Village_Pack/0.DemoGameResource/Sprite/Run.anim
+  uploadId: 238652

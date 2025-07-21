@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5d48ce0cb6c70d245a06c0dcd6d82541
+timeCreated: 1519967820
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110512
+  packageName: Fantasy 2D Village NPC Character Pack
+  packageVersion: 1.2
+  assetPath: Assets/Village_Pack/0.DemoGameResource/WoodenDoll/Wooden_Doll.controller
+  uploadId: 238652

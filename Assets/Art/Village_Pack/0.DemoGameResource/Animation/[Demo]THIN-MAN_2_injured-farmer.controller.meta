@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6ddf54fdf5a65734abd3d9a483187d69
+timeCreated: 1522134752
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110512
+  packageName: Fantasy 2D Village NPC Character Pack
+  packageVersion: 1.2
+  assetPath: Assets/Village_Pack/0.DemoGameResource/Animation/[Demo]THIN-MAN_2_injured-farmer.controller
+  uploadId: 238652

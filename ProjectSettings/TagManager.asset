@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags:
+  - Walls
+  - Enemy
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: BG
+    uniqueID: 22000339
+    locked: 0
+  - name: Floor
+    uniqueID: 1329469733
+    locked: 0
+  - name: Walls
+    uniqueID: 475375131
+    locked: 0
+  - name: Decorations
+    uniqueID: 1640003253
+    locked: 0
+  - name: Characters
+    uniqueID: 3282365593
+    locked: 0
+  - name: UI
+    uniqueID: 3291323813
+    locked: 0
+  m_RenderingLayers:
+  - Default

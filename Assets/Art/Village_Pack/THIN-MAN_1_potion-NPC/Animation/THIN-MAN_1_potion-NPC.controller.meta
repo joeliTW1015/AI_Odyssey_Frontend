@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e6b76b0294f78ca42880c32403e33018
+timeCreated: 1516002099
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110512
+  packageName: Fantasy 2D Village NPC Character Pack
+  packageVersion: 1.2
+  assetPath: Assets/Village_Pack/THIN-MAN_1_potion-NPC/Animation/THIN-MAN_1_potion-NPC.controller
+  uploadId: 238652
