@@ -45,19 +45,20 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(DialogueSequence dialogueSequence)
     {
+        Debug.Log("Starting dialogue");
         currentLineIndex = 0;
         currentDialogueSequence = dialogueSequence;
-        if (dialogueSequence != null && dialogueSequence.lines.Count > 0)
+        if (currentDialogueSequence != null && currentDialogueSequence.lines.Count > 0)
         {
             dialoguePanel.SetActive(true);
-            if (dialogueSequence.numberOfSpeakers == 1)
+            if (currentDialogueSequence.numberOfSpeakers == 1)
             {
                 leftPortraitImage.gameObject.SetActive(true);
                 rightPortraitImage.gameObject.SetActive(false);
                 int speakerIndex = -1;
                 for (int i = 0; i < characterNames.Count; i++)
                 {
-                    if (characterNames[i] == dialogueSequence.speakerCharacterNames[0])
+                    if (characterNames[i] == currentDialogueSequence.speakerCharacterNames[0])
                     {
                         speakerIndex = i;
                         break;
@@ -72,7 +73,7 @@ public class DialogueManager : MonoBehaviour
                     Debug.LogWarning("Speaker index out of range or character portrait not found.");
                 }
             }
-            else if (dialogueSequence.numberOfSpeakers == 2)
+            else if (currentDialogueSequence.numberOfSpeakers == 2)
             {
                 leftPortraitImage.gameObject.SetActive(true);
                 rightPortraitImage.gameObject.SetActive(true);
@@ -80,11 +81,11 @@ public class DialogueManager : MonoBehaviour
                 int rightSpeakerIndex = -1;
                 for (int i = 0; i < characterNames.Count; i++)
                 {
-                    if (characterNames[i] == dialogueSequence.speakerCharacterNames[0])
+                    if (characterNames[i] == currentDialogueSequence.speakerCharacterNames[0])
                     {
                         leftSpeakerIndex = i;
                     }
-                    if (characterNames[i] == dialogueSequence.speakerCharacterNames[1])
+                    if (characterNames[i] == currentDialogueSequence.speakerCharacterNames[1])
                     {
                         rightSpeakerIndex = i;
                     }
@@ -107,7 +108,7 @@ public class DialogueManager : MonoBehaviour
                 }
             }
 
-            DisplayDialogueLine(dialogueSequence.lines[0]);
+            DisplayDialogueLine(currentDialogueSequence.lines[0]);
         }
         else
         {
@@ -163,6 +164,7 @@ public class DialogueManager : MonoBehaviour
         {
             Destroy(content);
         }
+        tmpContentObjects = new List<GameObject>();
         currentLineIndex++;
         if (currentLineIndex < currentDialogueSequence.lines.Count)
         {
@@ -181,13 +183,15 @@ public class DialogueManager : MonoBehaviour
         currentLineIndex = 0;
 
 
-        // Trigger interface if specified
-        if (currentDialogueSequence != null && currentDialogueSequence.triggerInterfaceWhenEnding)
+        // Trigger event if specified
+        if (currentDialogueSequence != null && currentDialogueSequence.triggerEventWhenEnding)
         {
-            // Logic to trigger the interface can be added here
-            Debug.Log("Triggering interface after dialogue ends.");
-            //TODO: Implement interface triggering logic
+            // Logic to trigger the event can be added here
+            Debug.Log("Triggering event after dialogue ends.");
+            FindFirstObjectByType<LevelManagerBase>()?.ActivateEvent(currentDialogueSequence.triggeredEventIndex);
+            //TODO: Implement event triggering logic
         }
-        currentDialogueSequence = null;
     }
+
+    
 }

@@ -21,5 +21,6 @@ public class DialogueSequence
     public int numberOfSpeakers = 1;
     public List<string> speakerCharacterNames; // Names of the characters speaking in the dialogue
     public List<DialogueLine> lines;
-    public bool triggerInterfaceWhenEnding = false; // Whether to trigger the interface when the dialogue ends
+    public bool triggerEventWhenEnding = false; // Whether to trigger the event when the dialogue ends
+    public int triggeredEventIndex = 0; // Index of the event to trigger when the dialogue ends
 }

@@ -23,7 +23,7 @@ public class DialogueTrigger : MonoBehaviour
         if (dialogueSequence != null && dialogueSequence.lines.Count > 0)
         {
             // Logic to start the dialogue using the dialogueSequence
-            Debug.Log("Starting dialogue");
+            Debug.Log("Trigger dialogue");
             // Additional code to handle the dialogue display can be added here
             DialogueManager.Instance.StartDialogue(dialogueSequence);
             if (!retriggerable)
