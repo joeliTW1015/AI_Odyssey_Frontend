@@ -118,6 +118,7 @@ public class LevelManager_02 : LevelManagerBase
         {
             labelingInterface.SetActive(true);
             GetFishSpriteFromBackEnd();
+            labelCountText.text = $"目前資料量：\n{0}張圖片"; // Update the label count text
             imageToBeLabeled.sprite = fishSprite; // Set the sprite to the image to
         }
         else if (EventIndex == 5) // know the photo

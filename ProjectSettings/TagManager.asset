@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Walls
   - Enemy
+  - Fish
   layers:
   - Default
   - TransparentFX
