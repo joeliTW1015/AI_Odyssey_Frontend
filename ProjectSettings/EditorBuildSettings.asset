@@ -8,6 +8,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TestShootingLevel.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/AILevel02_train.unity
+    guid: 3f9aaa515eb31b74b92cd470fd91d9fd
+  - enabled: 1
+    path: Assets/Scenes/AILevel02_fishing.unity
+    guid: dbeac7727410fc94c9cd36b9db25f309
+  - enabled: 1
+    path: Assets/Scenes/AILevel01.unity
+    guid: 6a5f3e37e5c8b124380ab3177e198adc
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 91f77cb78378e684988b49ce8d417037, type: 3}
   m_UseUCBPForAssetBundles: 0

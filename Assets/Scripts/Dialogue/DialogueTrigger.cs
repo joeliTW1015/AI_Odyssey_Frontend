@@ -4,7 +4,8 @@ public class DialogueTrigger : MonoBehaviour
 {
     bool retriggerable = true; // Allows the dialogue to be triggered multiple times
     [SerializeField] float clickRadius = 100f; // Radius within which the player can trigger dialogue
-    [SerializeField] DialogueSequence dialogueSequence;
+    public DialogueSequence dialogueSequence;
+    [SerializeField] DialogueSequence secondTimeDialogueSequence; // Dialogue for the second time entering the level
     [SerializeField] GameObject exclamationMark;
     bool playerInRange;
 
@@ -29,6 +30,10 @@ public class DialogueTrigger : MonoBehaviour
             if (!retriggerable)
             {
                 Destroy(gameObject); // Destroy the trigger if not retriggerable
+            }
+            else if(secondTimeDialogueSequence != null && secondTimeDialogueSequence.lines.Count > 0)
+            {
+                dialogueSequence = secondTimeDialogueSequence; // Switch to the second time dialogue sequence
             }
         }
         else

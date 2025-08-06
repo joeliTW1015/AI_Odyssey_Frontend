@@ -119,7 +119,7 @@ public class DialogueManager : MonoBehaviour
     private void DisplayDialogueLine(DialogueLine line)
     {
         dialogueText.text = line.speakingContent;
-        speakerNameText.text = characterNames[line.speakerIndex];
+        speakerNameText.text = currentDialogueSequence.speakerCharacterNames[line.speakerIndex];
         // 讓沒有說話的人的肖像變暗
         if (currentDialogueSequence.numberOfSpeakers > 1)
         {
@@ -133,6 +133,10 @@ public class DialogueManager : MonoBehaviour
                 leftPortraitImage.color = new Color(1, 1, 1, 0.5f); // Dim the left portrait
                 rightPortraitImage.color = new Color(1, 1, 1, 1); // Reset the right portrait
             }
+        }
+        else
+        {
+            leftPortraitImage.color = new Color(1, 1, 1, 1); // Reset the left portrait
         }
 
         //處理額外內容顯示
@@ -189,7 +193,8 @@ public class DialogueManager : MonoBehaviour
             // Logic to trigger the event can be added here
             Debug.Log("Triggering event after dialogue ends.");
             FindFirstObjectByType<LevelManagerBase>()?.ActivateEvent(currentDialogueSequence.triggeredEventIndex);
-            //TODO: Implement event triggering logic
+            //?表示這是一個空值條件運算符，當前面為null時不會拋出異常，而是返回null
+            
         }
     }
 
