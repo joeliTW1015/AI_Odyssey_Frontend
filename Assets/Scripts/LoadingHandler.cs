@@ -6,6 +6,7 @@ public class LoadingHandler : MonoBehaviour
 {
     public static LoadingHandler Instance;
     [SerializeField] private GameObject loadingScreen;
+    [SerializeField] float fadeDuration = 1f; // Duration for the fade effect
     Image bg;
     Image blackPanel;
 
@@ -25,7 +26,7 @@ public class LoadingHandler : MonoBehaviour
     IEnumerator BgBlackToTransparent()
     {
         Debug.Log("Fading out background to transparent");
-        float duration = 2f; // Duration of the fade
+        float duration = fadeDuration; // Duration of the fade
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
@@ -41,7 +42,7 @@ public class LoadingHandler : MonoBehaviour
     }
     IEnumerator BgTransparentToBlack(string sceneName)
     {
-        float duration = 1f; // Duration of the fade
+        float duration = fadeDuration; // Duration of the fade
         float elapsedTime = 0f;
         bg.enabled = true; // Enable the background after fading in
         while (elapsedTime < duration)

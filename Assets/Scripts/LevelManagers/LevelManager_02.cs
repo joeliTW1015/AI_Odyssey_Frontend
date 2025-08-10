@@ -118,8 +118,9 @@ public class LevelManager_02 : LevelManagerBase
         {
             labelingInterface.SetActive(true);
             GetFishSpriteFromBackEnd();
+            //TODO: 處理兩次釣魚的差異
             labelCountText.text = $"目前資料量：\n{0}張圖片"; // Update the label count text
-            imageToBeLabeled.sprite = fishSprite; // Set the sprite to the image to
+            
         }
         else if (EventIndex == 5) // know the photo
         {
@@ -149,6 +150,7 @@ public class LevelManager_02 : LevelManagerBase
         await System.Threading.Tasks.Task.Delay(1000); // Simulating a delay for fetching the sprite
         fishSprite = placeholderFishSprites[fishSpriteIndex]; // For now, using a placeholder sprite
         LoadingHandler.Instance.HideLoadingScreen();
+        imageToBeLabeled.sprite = fishSprite; // Set the sprite to the image to
     }
 
     void NextFishImage()

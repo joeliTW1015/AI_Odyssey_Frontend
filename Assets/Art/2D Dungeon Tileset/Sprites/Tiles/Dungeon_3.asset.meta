@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5b2a7f75807d0614b9d30bc0b72ac265
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 140665
+  packageName: 2D Dungeon Tileset
+  packageVersion: 2.1
+  assetPath: Assets/2D Dungeon Tileset/Sprites/Tiles/Dungeon_3.asset
+  uploadId: 341082

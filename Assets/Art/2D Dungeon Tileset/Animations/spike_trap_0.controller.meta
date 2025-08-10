@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a9b4466957de64f4999bc76b8c3215db
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 140665
+  packageName: 2D Dungeon Tileset
+  packageVersion: 2.1
+  assetPath: Assets/2D Dungeon Tileset/Animations/spike_trap_0.controller
+  uploadId: 341082

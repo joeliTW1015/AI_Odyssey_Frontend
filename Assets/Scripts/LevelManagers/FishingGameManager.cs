@@ -15,12 +15,17 @@ public class FishInfo
     }
 }
 
-public class FishingGameManager : MonoBehaviour
+public class FishingGameManager : LevelManagerBase
 {
+    [Header("Dialogues")]
+    [SerializeField] DialogueSequence startDialogue; // 開始釣魚的對話
+    [SerializeField] DialogueSequence firstTimeEndDialogue; // 第一次結束釣魚的對話
+    [SerializeField] DialogueSequence SecondTimeEndDialogue; // 結束釣魚的對話
     [Header("Fish List")]
     [SerializeField] List<FishInfo> fishList; // List of fish types and their sprites
 
     [Header("Fishing Settings")]
+    bool startFishing = false; // 是否開始釣魚
     [SerializeField] int maxCatch = 10; // Maximum number of fish to catch
     [SerializeField] float hookSwingSpeed = 2f; // Speed of the hook swinging left and right
     [SerializeField] float hookSwingRange = 0.5f; // Range of the hook swinging
@@ -67,6 +72,7 @@ public class FishingGameManager : MonoBehaviour
             Destroy(Instance.gameObject);
         }
         Instance = this;
+        startFishing = false; // 初始狀態為未開始釣魚
         state = 0; // 初始狀態為魚線未拉出
         currentCatchCount = 0;
         currentFishIndex = -1; // 初始沒有釣到魚
@@ -86,6 +92,7 @@ public class FishingGameManager : MonoBehaviour
         }
         SiverFishCountText.text = 0.ToString();
         NormalFishCountText.text = 0.ToString();
+        DialogueManager.Instance.StartDialogue(startDialogue); // 開始釣魚的對話
     }
 
     void Start()
@@ -107,7 +114,7 @@ public class FishingGameManager : MonoBehaviour
     //只是魚上鉤不代表釣到
     public void OnFishCaught(GameObject fishObject)
     {
-        if(state != 1) return; // 確保只有在魚線下放中狀態時才處理捕魚
+        if (state != 1) return; // 確保只有在魚線下放中狀態時才處理捕魚
         state = 2; // 捕捉到魚(檢查中)
         fishObject.transform.SetParent(hook.transform); // 將魚物件設置為魚鉤的子物件
         Fish fish = fishObject.GetComponent<Fish>();
@@ -156,7 +163,7 @@ public class FishingGameManager : MonoBehaviour
 
     void Update()
     {
-        if (lineRenderer == null || hook == null || fixedpoint == null) return;
+        if (!startFishing) return;
 
         // 更新魚線的起點和終點
         lineRenderer.SetPosition(0, fixedpoint.position);
@@ -271,8 +278,43 @@ public class FishingGameManager : MonoBehaviour
                     //TODO : 捕到魚之後的動畫
                     currentFishIndex = -1; // 重置當前魚索引
                     state = 0; // 重置狀態為魚線未下放
+                    if (currentCatchCount >= maxCatch)
+                    {
+                        // 捕到足夠的魚，結束釣魚
+                        if (!LevelManager_02.isSecondTimeEntered)
+                        {
+                            DialogueManager.Instance.StartDialogue(firstTimeEndDialogue); // 第一次結束釣魚的對話
+                        }
+                        else
+                        {
+                            DialogueManager.Instance.StartDialogue(SecondTimeEndDialogue); // 第二次結束釣魚的對話
+                        }
+                        startFishing = false; // 停止釣魚
+                    }
                 }
             }
         }
     }
+
+    public override void ActivateEvent(int EventIndex)
+    {
+        if (EventIndex == 1) // 開始釣魚
+        {
+            startFishing = true; //
+        }
+        else if (EventIndex == 2) // End fishing
+        {
+            if (!LevelManager_02.isSecondTimeEntered)
+            {
+                LevelManager_02.isSecondTimeEntered = true; // Set the flag to true after first time fishing
+                LoadingHandler.Instance.ChangeScene("AILevel02_train"); // Back to training scene
+            }
+            else
+            {
+                Debug.Log("Level 02 fishing completed!");
+                //處理第二次釣魚完成後
+            }
+        }
+    }
+        
 }
