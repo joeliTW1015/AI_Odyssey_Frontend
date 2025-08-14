@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 public class StartSceneManager : MonoBehaviour
 {
@@ -77,17 +78,19 @@ public class StartSceneManager : MonoBehaviour
             // Assuming the response contains a success message
             string responseText = request.downloadHandler.text;
             StartCoroutine(ShowSuccessLogin(responseText));
+            JObject json = JObject.Parse(responseText);
+            PlayerPrefs.SetString("key", json["data"]["access_token"].ToString());
+            //TODO: encrypt the access token before saving
         }
     }
 
     IEnumerator ShowRegisterSuccess(string successMessage)
     {
-        LoadingHandler.Instance.ShowLoadingScreen("註冊成功: " + successMessage);
+        LoadingHandler.Instance.ShowLoadingScreen("註冊成功，請重新登入: ");
         Debug.Log(successMessage);
         // Optionally, show a success message to the user
         yield return new WaitForSeconds(2f); // Wait for 2 seconds before hiding the success message
         LoadingHandler.Instance.HideLoadingScreen();
-        LoadingHandler.Instance.ChangeScene("LevelMenu"); // Change to the main menu scene
     }
 
     IEnumerator ShowError(string errorMessage)
@@ -103,7 +106,7 @@ public class StartSceneManager : MonoBehaviour
 
     IEnumerator ShowSuccessLogin(string successMessage)
     {
-        LoadingHandler.Instance.ShowLoadingScreen("登入成功: " + successMessage);
+        LoadingHandler.Instance.ShowLoadingScreen("登入成功，請稍候...");
         Debug.Log(successMessage);
         // Optionally, show a success message to the user
         yield return new WaitForSeconds(2f); // Wait for 2 seconds before hiding the success message

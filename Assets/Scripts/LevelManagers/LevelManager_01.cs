@@ -4,6 +4,9 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using NUnit.Framework.Constraints;
 using System.Collections;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 public class LevelManager_01 : LevelManagerBase
 {
@@ -32,6 +35,7 @@ public class LevelManager_01 : LevelManagerBase
     [Header("Backend URL")]
     [SerializeField] string stringToImageUrl;
     [SerializeField] string imageToStringUrl;
+
     [Header("placeholder for backend image")]
     [SerializeField] Texture2D placeholderImageBad, placeholderImageGood;
 
@@ -77,7 +81,7 @@ public class LevelManager_01 : LevelManagerBase
         {
             // Process the input text
             Debug.Log("Submitted: " + inputText);
-            StartCoroutine(GetImageFromBackend(inputText));
+            GetImageFromBackend(inputText);
         }
         else
         {
@@ -91,25 +95,48 @@ public class LevelManager_01 : LevelManagerBase
         CookingInterface.SetActive(false);
     }
 
-    IEnumerator GetImageFromBackend(string prompt)
+    async void GetImageFromBackend(string prompt)
     {
-        //placeholder for actual backend call
-        Debug.Log("Getting image from backend for prompt: " + prompt);
-        //TODO: api post request to get image
-        //TODO : loading image and error handling
         LoadingHandler.Instance.ShowLoadingScreen();
-        yield return new WaitForSeconds(3); // Simulate network delay
+
+        Debug.Log("Getting image from backend for prompt: " + prompt);
+        UnityWebRequest request = new UnityWebRequest(stringToImageUrl, "POST");
+        string jsonBody = JsonConvert.SerializeObject(new { prompt = prompt });
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", "Bearer " + PlayerPrefs.GetString("key")); //使用存儲的token才能獲取圖片
+        await request.SendWebRequest();
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            //show error message for 2 seconds
+            LoadingHandler.Instance.ShowLoadingScreen("獲取圖片失敗: " + request.error);
+            await Task.Delay(2000);
+            LoadingHandler.Instance.HideLoadingScreen();
+            return;
+        }
+        else
+        {
+            Debug.Log("Image received from backend: " + request.downloadHandler.text);
+            string responseText = request.downloadHandler.text;
+            string imageUrl = JObject.Parse(responseText)["data"]["image_url"].ToString();
+            UnityWebRequest imageRequest = UnityWebRequestTexture.GetTexture(imageUrl);
+            await imageRequest.SendWebRequest();
+            if (imageRequest.result == UnityWebRequest.Result.ConnectionError || imageRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                LoadingHandler.Instance.ShowLoadingScreen("獲取圖片失敗: " + request.error);
+                await Task.Delay(2000);
+                LoadingHandler.Instance.HideLoadingScreen();
+                return;
+            }
+            else
+            {
+                outcomeImageTexture = DownloadHandlerTexture.GetContent(imageRequest);
+            }
+            outcomeImage.sprite = Sprite.Create(outcomeImageTexture, new Rect(0, 0, outcomeImageTexture.width, outcomeImageTexture.height), new Vector2(0.5f, 0.5f));
+        }
         LoadingHandler.Instance.HideLoadingScreen();
-        Debug.Log("Image received from backend.");
-        if(prompt == "good")
-        {
-            outcomeImageTexture = placeholderImageGood;
-        }
-        else 
-        {
-            outcomeImageTexture = placeholderImageBad;
-        }
-        outcomeImage.sprite = Sprite.Create(outcomeImageTexture, new Rect(0, 0, outcomeImageTexture.width, outcomeImageTexture.height), new Vector2(0.5f, 0.5f));
     }
 
     void StartJudging()

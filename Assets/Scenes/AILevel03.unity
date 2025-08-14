@@ -1563,7 +1563,7 @@ MonoBehaviour:
       textContent: 
     triggerEventWhenEnding: 0
     triggeredEventIndex: 0
-  stringToImageUrl: 
+  stringToImageUrl: https://ai-odyssey-backend-rbzz.onrender.com/module3/generate-recipe-image
   imageToStringUrl: 
   placeholderImageBad: {fileID: 2800000, guid: 47db9e7ecf6a884458a0bfeff3abc815, type: 3}
   placeholderImageGood: {fileID: 2800000, guid: 55f3c0c1ceded9043963210fdec02b56, type: 3}
@@ -8577,10 +8577,10 @@ SceneRoots:
   - {fileID: 180382315}
   - {fileID: 1228095005}
   - {fileID: 1337894658}
-  - {fileID: 506149571}
   - {fileID: 223834251}
   - {fileID: 1627131275}
   - {fileID: 1919565870}
   - {fileID: 801887316}
   - {fileID: 1738699669}
   - {fileID: 1494337709}
+  - {fileID: 506149571}
