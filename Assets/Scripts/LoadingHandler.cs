@@ -5,10 +5,11 @@ using UnityEngine.UI;
 public class LoadingHandler : MonoBehaviour
 {
     public static LoadingHandler Instance;
-    [SerializeField] private GameObject loadingScreen;
+    [SerializeField] private GameObject textBox;
     [SerializeField] float fadeDuration = 1f; // Duration for the fade effect
     Image bg;
     Image blackPanel;
+    Text message;
 
     private void Awake()
     {
@@ -17,7 +18,9 @@ public class LoadingHandler : MonoBehaviour
             Destroy(Instance.gameObject);
         }
         Instance = this;
-        loadingScreen.SetActive(false);
+        message = textBox.GetComponentInChildren<Text>();
+        textBox.SetActive(false);
+        
         bg = GetComponent<Image>();
         bg.enabled = true;
         bg.color = Color.black; // Set background color to black
@@ -63,16 +66,17 @@ public class LoadingHandler : MonoBehaviour
         }
     }
 
-    public void ShowLoadingScreen()
+    public void ShowLoadingScreen(string messageText = "載入中...")
     {
+        message.text = messageText;
         bg.enabled = true;
-        loadingScreen.SetActive(true);
+        textBox.SetActive(true);
     }
 
     public void HideLoadingScreen()
     {
         bg.enabled = false;
-        loadingScreen.SetActive(false);
+        textBox.SetActive(false);
     }
 
     public void ChangeScene(string sceneName)

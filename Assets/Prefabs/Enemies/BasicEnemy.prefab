@@ -137,7 +137,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1298787477418603857}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.2042656, y: -1.8580477, z: -0.042791765}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -222,11 +222,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22eb76a28a42d5048ba4cf6638cf2109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 3
   speed: 1
+  attackDamage: 1
+  attackCooldown: 0.5
+  repelForce: 3
+  repelTime: 0.5
+  deadFadeDuration: 0.5
   healthBarObject: {fileID: 4584456849948628937}
-  enemyDamage: 1
-  animationSpriteRenderer: {fileID: 7038525926953190728}
+  spawnAnimationDuration: 0.5
+  attackRange: 1
+  animator: {fileID: 5987365487255588513}
 --- !u!1 &4584456849948628937
 GameObject:
   m_ObjectHideFlags: 0

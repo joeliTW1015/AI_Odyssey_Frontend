@@ -52,7 +52,7 @@ public class BulletBase : MonoBehaviour
             EnemyBase enemy = other.GetComponent<EnemyBase>();
             if (enemy != null)
             {
-                enemy.TakeDamage(damage);
+                enemy.TakeDamage(damage, transform.up);
             }
             BulletDestroy();
         }

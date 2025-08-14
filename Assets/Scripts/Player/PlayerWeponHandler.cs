@@ -35,7 +35,7 @@ public class PlayerWeponHandler : MonoBehaviour
             // Use the virtual joystick for firing direction
             fireDirection = new Vector2(fireVirtualJoystick.Horizontal, fireVirtualJoystick.Vertical);
             joystickMagnitude = fireDirection.magnitude; // Update joystick magnitude, range [0, 1]
-            Debug.Log($"Joystick Direction: {fireDirection}, Magnitude: {joystickMagnitude}");
+            //Debug.Log($"Joystick Direction: {fireDirection}, Magnitude: {joystickMagnitude}");
             if (fireDirection.magnitude < 0.01f)
             {
                 fireDirection = Vector2.zero; // Prevent small movements
@@ -52,7 +52,7 @@ public class PlayerWeponHandler : MonoBehaviour
         if (fireDirection != Vector2.zero)
         {
             transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg);
-            if(transform.rotation.eulerAngles.z >90f && transform.rotation.eulerAngles.z < 270f)
+            if (transform.rotation.eulerAngles.z > 90f && transform.rotation.eulerAngles.z < 270f)
             {
                 weaponSpriteRenderer.flipY = true; // Flip the weapon sprite if facing downwards
             }
@@ -62,4 +62,5 @@ public class PlayerWeponHandler : MonoBehaviour
             }
         }
     }
+    //TODO: swich between weapons
 }
