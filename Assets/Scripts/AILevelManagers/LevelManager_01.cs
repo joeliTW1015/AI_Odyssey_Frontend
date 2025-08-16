@@ -199,5 +199,6 @@ public class LevelManager_01 : LevelManagerBase
     private void LevelComplete()
     {
         Debug.Log("Level 1 complete!");
+        LoadingHandler.Instance.ChangeScene("LevelMenu");
     }
 }

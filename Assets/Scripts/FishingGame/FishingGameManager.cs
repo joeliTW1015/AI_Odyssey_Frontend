@@ -312,6 +312,7 @@ public class FishingGameManager : LevelManagerBase
             else
             {
                 Debug.Log("Level 02 fishing completed!");
+                LoadingHandler.Instance.ChangeScene("LevelMenu");
                 //處理第二次釣魚完成後
             }
         }
