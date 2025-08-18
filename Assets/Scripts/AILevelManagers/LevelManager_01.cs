@@ -7,37 +7,50 @@ using System.Collections;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
+using Unity.Android.Gradle.Manifest;
 
+[System.Serializable]
+public class Dish
+{
+    [TextArea] public string dishName;
+    [TextArea] public string dishRequirements;
+}
 public class LevelManager_01 : LevelManagerBase
 {
     public static LevelManager_01 Instance;
+    [Header("Dishes")]
+    int currentDishIndex = 0;
+    [SerializeField] Dish[] dishes;
     [Header("Cooking Interface")]
     [SerializeField] GameObject CookingInterface;
+    [SerializeField] Text dishNameText;
     [SerializeField] InputField inputField;
     [SerializeField] Button submitButton;
     [SerializeField] Button quitCookingInterfaceButton;
     [SerializeField] Image outcomeImage;
     Texture2D outcomeImageTexture;
+    string outcomeImageName;
 
     [Header("Judging Interface")]
     [SerializeField] GameObject JudgingInterface;
     [SerializeField] Image foodImage;
     [SerializeField] Text judgingReviewText;
     [SerializeField] Slider scoreSlider;
-    [SerializeField] [Range(0, 100)] int successThreshold = 80; // Threshold for success in judging
+    [SerializeField][Range(0, 100)] int successThreshold = 60; // Threshold for success in judging
     [SerializeField] Button quitJudgingInterfaceButton;
-    [SerializeField] DialogueSequence successDialogue;
-    [SerializeField] DialogueSequence failureDialogue;
-    [SerializeField] DialogueSequence noInputDialogue;
+    
     bool isJudging = false;
     int currentScore = 0;
-    string feedback = "";
     [Header("Backend URL")]
     [SerializeField] string stringToImageUrl;
     [SerializeField] string imageToStringUrl;
 
-    [Header("placeholder for backend image")]
-    [SerializeField] Texture2D placeholderImageBad, placeholderImageGood;
+    [Header("Dialogue")]
+    [SerializeField] DialogueSequence startDialogue;
+    [SerializeField] DialogueSequence endDialogue;
+    [SerializeField] DialogueSequence successDialogue;
+    [SerializeField] DialogueSequence failureDialogue;
+    [SerializeField] DialogueSequence noInputDialogue;
 
     private void Awake()
     {
@@ -54,11 +67,18 @@ public class LevelManager_01 : LevelManagerBase
         quitJudgingInterfaceButton.onClick.AddListener(EndJudging);
     }
 
+    private void Start()
+    {
+        DialogueManager.Instance.StartDialogue(startDialogue);
+    }
+
     public override void ActivateEvent(int EventIndex)
     {
         if (EventIndex == 1) // Activate the cooking interface
         {
             CookingInterface.SetActive(true);
+            dishNameText.text = "要做的料理: " + dishes[currentDishIndex].dishName;
+            inputField.text = "";
         }
         else if (EventIndex == 2) // Start the judging process
         {
@@ -120,7 +140,7 @@ public class LevelManager_01 : LevelManagerBase
         {
             Debug.Log("Image received from backend: " + request.downloadHandler.text);
             string responseText = request.downloadHandler.text;
-            string imageUrl = JObject.Parse(responseText)["data"]["image_url"].ToString();
+            string imageUrl = JObject.Parse(responseText)["image_url"].ToString();
             UnityWebRequest imageRequest = UnityWebRequestTexture.GetTexture(imageUrl);
             await imageRequest.SendWebRequest();
             if (imageRequest.result == UnityWebRequest.Result.ConnectionError || imageRequest.result == UnityWebRequest.Result.ProtocolError)
@@ -132,6 +152,9 @@ public class LevelManager_01 : LevelManagerBase
             }
             else
             {
+                string imageName = JObject.Parse(responseText)["file_info"]["original_filename"].ToString();
+                Debug.Log("Image name: " + imageName);
+                outcomeImageName = imageName;
                 outcomeImageTexture = DownloadHandlerTexture.GetContent(imageRequest);
             }
             outcomeImage.sprite = Sprite.Create(outcomeImageTexture, new Rect(0, 0, outcomeImageTexture.width, outcomeImageTexture.height), new Vector2(0.5f, 0.5f));
@@ -141,7 +164,7 @@ public class LevelManager_01 : LevelManagerBase
 
     void StartJudging()
     {
-        if (outcomeImageTexture == null)
+        if (outcomeImageTexture == null || string.IsNullOrEmpty(outcomeImageName))
         {
             DialogueManager.Instance.StartDialogue(noInputDialogue);
             return;
@@ -149,12 +172,12 @@ public class LevelManager_01 : LevelManagerBase
         isJudging = true;
         JudgingInterface.SetActive(true);
         foodImage.sprite = Sprite.Create(outcomeImageTexture, new Rect(0, 0, outcomeImageTexture.width, outcomeImageTexture.height), new Vector2(0.5f, 0.5f));
-        StartCoroutine(GetReviewFromBackend());
+        GetReviewFromBackend();
     }
 
     void EndJudging()
     {
-        if(isJudging)
+        if (isJudging)
         {
             Debug.LogWarning("Judging is still in progress. Please wait for the review to complete.");
             return;
@@ -162,7 +185,16 @@ public class LevelManager_01 : LevelManagerBase
         JudgingInterface.SetActive(false);
         if (currentScore >= successThreshold)
         {
-            DialogueManager.Instance.StartDialogue(successDialogue);
+            currentDishIndex++;
+            if (currentDishIndex < dishes.Length)
+            {
+                DialogueManager.Instance.StartDialogue(successDialogue);
+            }
+            else
+            {
+                DialogueManager.Instance.StartDialogue(endDialogue);
+                LevelComplete();
+            }
         }
         else
         {
@@ -170,30 +202,56 @@ public class LevelManager_01 : LevelManagerBase
         }
     }
 
-    IEnumerator GetReviewFromBackend()
+    async void GetReviewFromBackend()
     {
         //placeholder for actual backend call
         Debug.Log("Getting review from backend for image.");
         LoadingHandler.Instance.ShowLoadingScreen();
-        yield return new WaitForSeconds(3);
-        LoadingHandler.Instance.HideLoadingScreen();
-        // Simulate network delay
-        //TODO: api post request to get review and score
-        //TODO : loading icon and error handling
-        Debug.Log("Review received from backend.");
-        if(outcomeImageTexture == placeholderImageGood)
+        UnityWebRequest request = new UnityWebRequest(imageToStringUrl, "POST");
+        string jsonBody = JsonConvert.SerializeObject(new { image_hash = outcomeImageName, dish_expect = dishes[currentDishIndex].dishRequirements });
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Authorization", "Bearer " + PlayerPrefs.GetString("key")); //使用存儲的token才能獲取評價
+        request.SetRequestHeader("Content-Type", "application/json");
+        await request.SendWebRequest();
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
-            currentScore = 90; // Simulated score for good image
-            feedback = "好吃好吃";
+            Debug.LogError("Error getting review: " + request.error);
+            LoadingHandler.Instance.ShowLoadingScreen("獲取評價失敗: " + request.error);
+            await Task.Delay(2000);
+            LoadingHandler.Instance.HideLoadingScreen();
+            JudgingInterface.SetActive(false);
+            isJudging = false;
+            return;
+        }
+        JObject responseJson = JObject.Parse(request.downloadHandler.text);
+        string feedback = responseJson["analysis"].ToString();
+        currentScore = (int)responseJson["score"];
+
+        Debug.Log("Review received from backend.");
+        judgingReviewText.text = "分數: " + currentScore + "/100" + "\n" + feedback;
+        scoreSlider.value = currentScore / 100f;
+        isJudging = false;
+        LoadingHandler.Instance.HideLoadingScreen();
+
+        if (currentScore >= successThreshold)
+        {
+            currentDishIndex++;
+            if (currentDishIndex < dishes.Length)
+            {
+                DialogueManager.Instance.StartDialogue(successDialogue);
+            }
+            else
+            {
+                DialogueManager.Instance.StartDialogue(endDialogue);
+                LevelComplete();
+            }
         }
         else
         {
-            currentScore = 30; // Simulated score for bad image
-            feedback = "噁心死了";
+            DialogueManager.Instance.StartDialogue(failureDialogue);
         }
-        judgingReviewText.text = feedback;
-        scoreSlider.value = currentScore / 100f;
-        isJudging = false;   
     }
 
     private void LevelComplete()
