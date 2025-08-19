@@ -79,7 +79,7 @@ public class StartSceneManager : MonoBehaviour
             string responseText = request.downloadHandler.text;
             StartCoroutine(ShowSuccessLogin(responseText));
             JObject json = JObject.Parse(responseText);
-            PlayerPrefs.SetString("key", json["data"]["access_token"].ToString());
+            PlayerPrefs.SetString("key", json["access_token"].ToString());
             //TODO: encrypt the access token before saving
         }
     }

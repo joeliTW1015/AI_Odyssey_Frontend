@@ -53,7 +53,7 @@ public class ChatBotPanel : MonoBehaviour
 
         string rawResponse = request.downloadHandler.text;
         JObject jsonResponse = JObject.Parse(rawResponse);
-        currentResponse = jsonResponse["data"]["answer"].ToString();
+        currentResponse = jsonResponse["answer"].ToString();
         responseText.text = currentResponse;
         LoadingHandler.Instance.HideLoadingScreen();
     }

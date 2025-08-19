@@ -1837,6 +1837,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 380532732}
   m_CullTransparentMesh: 1
+--- !u!1 &384877226 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3839533347518891485, guid: ce27f061e2fa72241bea74846286df5c, type: 3}
+  m_PrefabInstance: {fileID: 1526235165}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &395927783
 GameObject:
   m_ObjectHideFlags: 0
@@ -1952,6 +1957,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 270644786}
     m_Modifications:
+    - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
+      propertyPath: dialogueSequence.lines.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
+      propertyPath: dialogueSequence.triggeredEventIndex
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
+      propertyPath: dialogueSequence.triggerEventWhenEnding
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
+      propertyPath: dialogueSequence.speakerCharacterNames.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
+      propertyPath: dialogueSequence.lines.Array.data[0].speakingContent
+      value: "\u9580\u9396\u4E0A\u5BEB\u4E86\u4E00\u4E9B\u554F\u984C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
+      propertyPath: 'dialogueSequence.speakerCharacterNames.Array.data[0]'
+      value: "\u73A9\u5BB6"
+      objectReference: {fileID: 0}
     - target: {fileID: 2623327306529393293, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2141,14 +2170,30 @@ MonoBehaviour:
   chatBotPanel: {fileID: 704353921}
   initialDialogue:
     numberOfSpeakers: 1
-    speakerCharacterNames: []
-    lines: []
+    speakerCharacterNames:
+    - "\u73A9\u5BB6"
+    lines:
+    - speakerIndex: 0
+      speakingContent: "\u8D77\u59CB\u5C0D\u8A71"
+      showScrollContent: 0
+      showImage: 0
+      image: {fileID: 0}
+      showText: 0
+      textContent: 
     triggerEventWhenEnding: 0
     triggeredEventIndex: 0
   endingDialogue:
     numberOfSpeakers: 1
-    speakerCharacterNames: []
-    lines: []
+    speakerCharacterNames:
+    - "\u73A9\u5BB6"
+    lines:
+    - speakerIndex: 0
+      speakingContent: "\u7D50\u675F\u5C0D\u8A71"
+      showScrollContent: 0
+      showImage: 0
+      image: {fileID: 0}
+      showText: 0
+      textContent: 
     triggerEventWhenEnding: 0
     triggeredEventIndex: 0
 --- !u!1 &545651181
@@ -4251,7 +4296,7 @@ MonoBehaviour:
   inputField: {fileID: 1662748207}
   submitButton: {fileID: 690809878}
   quitButton: {fileID: 1369378615}
-  backendUrl: https://ai-odyssey-backend-rbzz.onrender.com/ask-pet
+  backendUrl: https://ai-odyssey-backend-rbzz.onrender.com/llama4
 --- !u!1 &713943721
 GameObject:
   m_ObjectHideFlags: 0
@@ -4861,10 +4906,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: dialogueSequence.triggeredEventIndex
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: dialogueSequence.triggerEventWhenEnding
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
+      propertyPath: dialogueSequence.lines.Array.data[0].showText
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
@@ -4883,6 +4932,10 @@ PrefabInstance:
     - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: 'dialogueSequence.speakerCharacterNames.Array.data[0]'
       value: "\u73A9\u5BB6"
+      objectReference: {fileID: 0}
+    - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
+      propertyPath: dialogueSequence.lines.Array.data[0].showScrollContent
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3122482856684473397, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: m_LocalScale.x
@@ -7302,11 +7355,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: dialogueSequence.lines.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: dialogueSequence.numberOfSpeakers
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
+      propertyPath: dialogueSequence.triggeredEventIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
+      propertyPath: dialogueSequence.triggerEventWhenEnding
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: dialogueSequence.lines.Array.data[2].image
@@ -7378,7 +7439,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: dialogueSequence.lines.Array.data[0].speakingContent
-      value: "\u59B3\u662F\u8AB0?\u70BA\u4EC0\u9EBC\u770B\u8D77\u4F86\u6101\u7709\u82E6\u81C9\u7684\u5462?"
+      value: "RAG\u6A5F\u5668\u4EBA\u5C0D\u8A71"
       objectReference: {fileID: 0}
     - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: dialogueSequence.lines.Array.data[1].speakingContent
@@ -8159,7 +8220,7 @@ PrefabInstance:
     - target: {fileID: 5059782711348602916, guid: ce27f061e2fa72241bea74846286df5c, type: 3}
       propertyPath: scrollContent
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 384877226}
     - target: {fileID: 5059782711348602916, guid: ce27f061e2fa72241bea74846286df5c, type: 3}
       propertyPath: speakerNameText
       value: 
