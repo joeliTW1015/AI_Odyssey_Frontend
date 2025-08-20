@@ -193,7 +193,6 @@ public class LevelManager_01 : LevelManagerBase
             else
             {
                 DialogueManager.Instance.StartDialogue(endDialogue);
-                LevelComplete();
             }
         }
         else
@@ -234,24 +233,6 @@ public class LevelManager_01 : LevelManagerBase
         scoreSlider.value = currentScore / 100f;
         isJudging = false;
         LoadingHandler.Instance.HideLoadingScreen();
-
-        if (currentScore >= successThreshold)
-        {
-            currentDishIndex++;
-            if (currentDishIndex < dishes.Length)
-            {
-                DialogueManager.Instance.StartDialogue(successDialogue);
-            }
-            else
-            {
-                DialogueManager.Instance.StartDialogue(endDialogue);
-                LevelComplete();
-            }
-        }
-        else
-        {
-            DialogueManager.Instance.StartDialogue(failureDialogue);
-        }
     }
 
     private void LevelComplete()

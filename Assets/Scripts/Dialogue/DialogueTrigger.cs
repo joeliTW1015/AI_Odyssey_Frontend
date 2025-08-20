@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    bool retriggerable = true; // Allows the dialogue to be triggered multiple times
+    [SerializeField] bool retriggerable = true; // Allows the dialogue to be triggered multiple times
     [SerializeField] float clickRadius = 100f; // Radius within which the player can trigger dialogue
     public DialogueSequence dialogueSequence;
     [SerializeField] GameObject exclamationMark;

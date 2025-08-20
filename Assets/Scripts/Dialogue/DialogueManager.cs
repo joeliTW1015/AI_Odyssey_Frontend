@@ -159,6 +159,10 @@ public class DialogueManager : MonoBehaviour
                 //textContent.GetComponent<RectTransform>().anchoredPosition = Vector2.zero; // Reset position
             }
         }
+        else
+        {
+            scrollContentPanel.SetActive(false);
+        }
 
     }
 
