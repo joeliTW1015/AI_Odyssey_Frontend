@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      KnowedgeRobot_0: -3613575449150048497
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

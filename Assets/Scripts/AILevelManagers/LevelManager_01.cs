@@ -24,6 +24,7 @@ public class LevelManager_01 : LevelManagerBase
     [Header("Cooking Interface")]
     [SerializeField] GameObject CookingInterface;
     [SerializeField] Text dishNameText;
+    [SerializeField] Text lastTimeReviewText;
     [SerializeField] InputField inputField;
     [SerializeField] Button submitButton;
     [SerializeField] Button quitCookingInterfaceButton;
@@ -78,7 +79,7 @@ public class LevelManager_01 : LevelManagerBase
         {
             CookingInterface.SetActive(true);
             dishNameText.text = "要做的料理: " + dishes[currentDishIndex].dishName;
-            inputField.text = "";
+            lastTimeReviewText.text = judgingReviewText.text;
         }
         else if (EventIndex == 2) // Start the judging process
         {

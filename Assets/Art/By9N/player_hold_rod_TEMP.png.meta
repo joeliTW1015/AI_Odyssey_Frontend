@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      player_hold_rod_TEMP_0: -8989263546778676736
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
