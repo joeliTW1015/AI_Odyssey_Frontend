@@ -37116,6 +37116,10 @@ PrefabInstance:
       propertyPath: 'dialogueSequence.speakerCharacterNames.Array.data[1]'
       value: "\u5925\u4F34"
       objectReference: {fileID: 0}
+    - target: {fileID: 2623327306529393293, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3122482856684473397, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -37185,12 +37189,20 @@ PrefabInstance:
       value: -0.41357636
       objectReference: {fileID: 0}
     - target: {fileID: 6988403361071791852, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.0799
+      objectReference: {fileID: 0}
+    - target: {fileID: 6988403361071791852, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1092566
+      objectReference: {fileID: 0}
+    - target: {fileID: 6988403361071791852, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.01
+      value: 0.1144
       objectReference: {fileID: 0}
     - target: {fileID: 6988403361071791852, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.28
+      value: 0.8067
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

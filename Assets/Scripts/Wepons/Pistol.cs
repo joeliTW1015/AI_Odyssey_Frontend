@@ -11,9 +11,6 @@ public class Pistol : WeponBase
         // Instantiate the bullet at the fire point
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.Euler(0, 0, firePoint.rotation.eulerAngles.z - 90f)); //四元数相乘
         bullet.GetComponent<BulletBase>().Initialize(bulletSpeed, fireRange, damage);
-        //TEST ，震动反馈
-        Handheld.Vibrate();
-
         //用插值做槍枝後座力的動畫
         float elapsedTime = 0f;
         Vector3 initialPosition = weaponAnimationObject.transform.localPosition;

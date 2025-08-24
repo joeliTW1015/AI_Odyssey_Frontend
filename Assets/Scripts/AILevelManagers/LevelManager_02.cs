@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;

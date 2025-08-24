@@ -7,7 +7,7 @@ using System.Collections;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
-using Unity.Android.Gradle.Manifest;
+
 
 [System.Serializable]
 public class Dish
