@@ -28,9 +28,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7429940465531611403}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.073760465, w: 0.997276}
+  m_LocalRotation: {x: 0, y: 0, z: -0.073760465, w: 0.997276}
   m_LocalPosition: {x: 3.34, y: -3.58, z: 0}
-  m_LocalScale: {x: 0.70000005, y: 0.70000005, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -79,9 +79,9 @@ SpriteRenderer:
   m_SortingLayerID: 1329469733
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2829129725021124987, guid: e21682a82241803479215b2cd15c5eb6, type: 3}
+  m_Sprite: {fileID: -6184563188987059105, guid: fa41493c38c04d049ab60926430ed2a4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1.1291667, y: 0.40833333}
@@ -173,7 +173,7 @@ MonoBehaviour:
   targetRangeYMax: 2
   fishIndex: 0
   fishType: 0
-  unknownFishSprite: {fileID: -2829129725021124987, guid: e21682a82241803479215b2cd15c5eb6, type: 3}
-  silverFishSprite: {fileID: 2603919968831132984, guid: d23fee3e1524d09438066ec8a5619ade, type: 3}
-  normalFishSprite: {fileID: -3225734757606166992, guid: 38d4032fba0a6fc408411b0af0f60cf4, type: 3}
+  unknownFishSprite: {fileID: -6184563188987059105, guid: fa41493c38c04d049ab60926430ed2a4, type: 3}
+  silverFishSprite: {fileID: -5385838430815568311, guid: 60a749912d68bfc4680166221b541fc2, type: 3}
+  normalFishSprite: {fileID: 2045151728857558579, guid: 8d905503ac6b7064d8db9d9bf1405e55, type: 3}
   isCatched: 0

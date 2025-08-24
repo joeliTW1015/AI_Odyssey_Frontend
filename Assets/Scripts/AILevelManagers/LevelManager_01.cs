@@ -200,6 +200,7 @@ public class LevelManager_01 : LevelManagerBase
         {
             DialogueManager.Instance.StartDialogue(failureDialogue);
         }
+        PlayerPrefs.SetInt("level_1_score_" + (currentDishIndex + 1), currentScore); // Save the score for the current dish
     }
 
     async void GetReviewFromBackend()

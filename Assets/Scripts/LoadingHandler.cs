@@ -6,6 +6,7 @@ public class LoadingHandler : MonoBehaviour
 {
     public static LoadingHandler Instance;
     [SerializeField] private GameObject textBox;
+    [SerializeField] Button homeButton;
     [SerializeField] float fadeDuration = 1f; // Duration for the fade effect
     Image bg;
     Image blackPanel;
@@ -20,11 +21,12 @@ public class LoadingHandler : MonoBehaviour
         Instance = this;
         message = textBox.GetComponentInChildren<Text>();
         textBox.SetActive(false);
-        
+
         bg = GetComponent<Image>();
         bg.enabled = true;
         bg.color = Color.black; // Set background color to black
         StartCoroutine(BgBlackToTransparent()); // Start fading out the background
+        homeButton.onClick.AddListener(() => ChangeScene("LevelMenu"));
     }
     IEnumerator BgBlackToTransparent()
     {

@@ -1,6 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
+using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 [System.Serializable]
 public class FishInfo
@@ -17,6 +22,8 @@ public class FishInfo
 
 public class FishingGameManager : LevelManagerBase
 {
+    [Header ("URL")]
+    [SerializeField] string fishRecognitionURL; // 魚類識別的URL
     [Header("Dialogues")]
     [SerializeField] DialogueSequence startDialogue; // 開始釣魚的對話
     [SerializeField] DialogueSequence firstTimeEndDialogue; // 第一次結束釣魚的對話
@@ -38,11 +45,12 @@ public class FishingGameManager : LevelManagerBase
     [SerializeField] Hook hook;
     [SerializeField] Transform fixedpoint;//魚竿固定線的點
     [SerializeField] Button CastButton; // 按鈕用於釣魚
-    [SerializeField] GameObject fishCaughtPanel; // 面板顯示捕到的魚
-    [SerializeField] Image fishCaughtImage; // 捕到的魚的圖片
+    [SerializeField] GameObject fishCaughtPanel; // 面板顯示預測結果
     [SerializeField] Text reconnitionOutcomeText; // 捕到魚的識別結果文本
-    [SerializeField] Text SiverFishCountText;
-    [SerializeField] Text NormalFishCountText;
+    [SerializeField] Text SilverFishCountText;
+    [SerializeField] GameObject resultPanel;
+    [SerializeField] Image resultImage;
+    [SerializeField] Image realFishImage;
     [Header("QTE Settings")]
     [SerializeField] GameObject qtePanel; // QTE面板
     [SerializeField] Button qteButton; // QTE按鈕
@@ -52,13 +60,16 @@ public class FishingGameManager : LevelManagerBase
     [SerializeField] float qteHookShakeAmplitude = 0.5f; // QTE時魚鉤的抖動幅度
     float qteProgress = 0f; // QTE進度條的當前值
 
+    [Header("Result Sprites")]
+    [SerializeField] Sprite silverFishResultSprite;
+    [SerializeField] Sprite normalFishResultSprite;
+
     public static FishingGameManager Instance;
 
     int state; // 0: 魚線未下放, 1: 魚線下放, 2: 捕捉到魚(檢查中), 3:捕捉到魚(拉鋸中), 4: 魚線上收
                //魚線未拉出時，魚鉤在上方左右擺動，直到釣魚按鈕被按下
     int currentCatchCount = 0; // 當前捕捉到的魚數量
-    int silverfishCount = 0;
-    int normalfishCount = 0;
+    int silverfishCount = 0; // 捕到的銀龍魚數量
     int currentFishIndex = 0; // 當前釣到的魚的索引
     int confidence = 0; // 捕到魚的識別結果置信度
     int predicTypeResult = 0; // 捕到魚的識別結果，0: 銀魚, 1: 普通魚
@@ -77,7 +88,6 @@ public class FishingGameManager : LevelManagerBase
         currentCatchCount = 0;
         currentFishIndex = -1; // 初始沒有釣到魚
         silverfishCount = 0;
-        normalfishCount = 0;
         predicTypeResult = -1; // 初始沒有識別結果
         confidence = 0; // 初始置信度為0
         CastButton.onClick.AddListener(CastTheHook); // 設置釣魚按鈕的點擊事件
@@ -90,8 +100,7 @@ public class FishingGameManager : LevelManagerBase
             lineRenderer.SetPosition(0, fixedpoint.position); // 設置魚線的起點
             lineRenderer.SetPosition(1, fixedpoint.position); // 設置魚線的終點
         }
-        SiverFishCountText.text = 0.ToString();
-        NormalFishCountText.text = 0.ToString();
+        SilverFishCountText.text = 0.ToString();
         DialogueManager.Instance.StartDialogue(startDialogue); // 開始釣魚的對話
     }
 
@@ -122,22 +131,64 @@ public class FishingGameManager : LevelManagerBase
         currentFishIndex = fish.fishIndex;
         fish.isCatched = true;
         fish.DisablePhysics(); // 禁用魚的物理效果防止其和其他魚碰撞
-        fishCaughtPanel.SetActive(true);
-        fishCaughtImage.sprite = fishList[currentFishIndex].fishSprite;
+        
         GetPredictionResultFromBackend(fish.fishIndex); //後端有魚的圖片
     }
 
     async void GetPredictionResultFromBackend(int fishIndex)
     {
-        // 模擬從後端獲取識別結果
         LoadingHandler.Instance.ShowLoadingScreen();
-        await System.Threading.Tasks.Task.Delay(500); // 模擬延遲
-        LoadingHandler.Instance.HideLoadingScreen();
-        confidence = Random.Range(50, 100); // 模擬置信度
-        predicTypeResult = fishList[fishIndex].fishType; // 模擬識別結果
+        string url = fishRecognitionURL + PlayerPrefs.GetString("username", "NO_Name");
+        UnityWebRequest request = new UnityWebRequest(url, "POST");
+        string fishTypeName = fishList[fishIndex].fishType == 0 ? "銀龍魚" : "吳郭魚";
+        string JsonBody = JsonConvert.SerializeObject(new { image_path = $"/{fishTypeName}/" + fishList[fishIndex].fishSprite.texture.name + ".jpg" });
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(JsonBody);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", "Bearer " + PlayerPrefs.GetString("key", ""));
+        Debug.Log("Sending fish recognition request: " + JsonBody);
+        await request.SendWebRequest();
+        bool errorFlag = true;
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            // 處理成功的回應
+            string jsonResponse = request.downloadHandler.text;
+            Debug.Log("Fish recognition response: " + jsonResponse);
+            JObject responseObject = JObject.Parse(jsonResponse);
+            if ((bool)responseObject["success"])
+            {
+                errorFlag = false;
+                confidence = (int)((float)responseObject["confidence"] * 100);
+                predicTypeResult = (string)responseObject["predicted_class"] == "銀龍魚" ? 0 : 1;
+            }
+        }
+
+        if (errorFlag)
+        {
+            // 處理錯誤的回應
+            Debug.LogError("Fish recognition error: " + request.error);
+            LoadingHandler.Instance.ShowLoadingScreen("魚類識別失敗，請稍後再試。");
+            await Task.Delay(2000); // 等待2秒
+            Fish fish = hook.GetComponentInChildren<Fish>();
+            //把魚放走
+            fishCaughtPanel.SetActive(false); // 隱藏捕到魚的面板
+            currentFishIndex = -1; // 重置當前魚索引
+            if (fish != null)
+            {
+                fish.EnablePhysics(); // 恢復魚的物理效果
+                fish.isCatched = false; // 重置魚的捕捉狀態
+                fish.transform.SetParent(null); // 將魚物件從魚鉤中移除
+            }
+            state = 4;
+            LoadingHandler.Instance.HideLoadingScreen();
+            return;
+        }
         //文字範例: 判定結果：銀龍魚\n信心：98%
-        reconnitionOutcomeText.text = "判定結果：" + (predicTypeResult == 0 ? "銀魚" : "普通魚") + "\n信心：" + confidence + "%";
+        reconnitionOutcomeText.text = "判定結果：" + (predicTypeResult == 0 ? "銀龍魚" : "吳郭魚") + "\n信心：" + confidence + "%";
         state = 3; // 捕捉到魚(拉鋸中)
+        fishCaughtPanel.SetActive(true);
+        LoadingHandler.Instance.HideLoadingScreen();
     }
 
     public void OnHookHitWall()
@@ -161,7 +212,7 @@ public class FishingGameManager : LevelManagerBase
     }
 
 
-    void Update()
+    void FixedUpdate() //因為有物理運算move to
     {
         if (!startFishing) return;
 
@@ -220,13 +271,14 @@ public class FishingGameManager : LevelManagerBase
             hook.transform.position = shakePosition;
             // 更新QTE進度條
             qteProgress -= qteProgressDropSpeed * Time.deltaTime; // 進度條下降
+            
             if (qteProgress < 0f)
             {
+                Fish fish = hook.GetComponentInChildren<Fish>();
                 //把魚放走
                 qtePanel.SetActive(false); // 隱藏QTE面板
                 fishCaughtPanel.SetActive(false); // 隱藏捕到魚的面板
                 currentFishIndex = -1; // 重置當前魚索引
-                Fish fish = hook.GetComponentInChildren<Fish>();
                 if (fish != null)
                 {
                     fish.EnablePhysics(); // 恢復魚的物理效果
@@ -238,6 +290,8 @@ public class FishingGameManager : LevelManagerBase
             else if (qteProgress >= 1f)
             {
                 // QTE成功，捕到魚，但真正捕到魚的效果發生在魚線上收時
+                Fish fish = hook.GetComponentInChildren<Fish>();
+                fish.ChangeSprite();
                 qtePanel.SetActive(false); // 隱藏QTE面板
                 fishCaughtPanel.SetActive(false); // 隱藏捕到魚的面板
                 state = 4; // 進入魚線上收狀態
@@ -259,23 +313,19 @@ public class FishingGameManager : LevelManagerBase
                 if (currentFishIndex != -1)
                 {
                     //捕到魚
-                    Fish fish = GetComponentInChildren<Fish>();
+                    Fish fish = hook.GetComponentInChildren<Fish>();
                     if (fish != null)
                     {
+                        fish.transform.SetParent(null);
                         currentCatchCount++;
                         if (fish.fishType == 0)
                         {
                             silverfishCount++;
-                            SiverFishCountText.text = silverfishCount.ToString();
-                        }
-                        else if (fish.fishType == 1)
-                        {
-                            normalfishCount++;
-                            NormalFishCountText.text = normalfishCount.ToString();
+                            SilverFishCountText.text = silverfishCount.ToString();
                         }
                         fish.gameObject.SetActive(false); // 隱藏魚物件
                     }
-                    //TODO : 捕到魚之後的動畫
+                    StartCoroutine(ShowResult(fish.fishType, fishList[currentFishIndex].fishSprite));
                     currentFishIndex = -1; // 重置當前魚索引
                     state = 0; // 重置狀態為魚線未下放
                     if (currentCatchCount >= maxCatch)
@@ -294,6 +344,22 @@ public class FishingGameManager : LevelManagerBase
                 }
             }
         }
+    }
+
+    IEnumerator ShowResult( int fishType, Sprite realFishSprite)
+    {
+        resultPanel.SetActive(true);
+        realFishImage.sprite = realFishSprite;
+        if (fishType == 0)
+        {
+            resultImage.sprite = silverFishResultSprite;
+        }
+        else
+        {
+            resultImage.sprite = normalFishResultSprite;
+        }
+        yield return new WaitForSeconds(1.5f);
+        resultPanel.SetActive(false);
     }
 
     public override void ActivateEvent(int EventIndex)

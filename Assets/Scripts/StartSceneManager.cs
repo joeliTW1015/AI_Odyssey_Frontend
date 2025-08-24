@@ -79,8 +79,16 @@ public class StartSceneManager : MonoBehaviour
             string responseText = request.downloadHandler.text;
             StartCoroutine(ShowSuccessLogin(responseText));
             JObject json = JObject.Parse(responseText);
+            //儲存玩家的資訊
             PlayerPrefs.SetString("key", json["access_token"].ToString());
+            PlayerPrefs.SetString("username", userName);
             //TODO: encrypt the access token before saving
+            //初始畫各關卡的分數儲存
+            PlayerPrefs.SetInt("level_1_score_1", 0);
+            PlayerPrefs.SetInt("level_1_score_2", 0);
+            PlayerPrefs.SetInt("level_1_score_3", 0); //三道菜餚的評分
+            PlayerPrefs.SetInt("level_2_fish_count", 0); //關卡2的銀龍魚數量
+            PlayerPrefs.SetInt("level_3_time", 0); //關卡3的通關時間
         }
     }
 
