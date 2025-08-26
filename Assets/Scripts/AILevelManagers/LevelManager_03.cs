@@ -50,6 +50,7 @@ public class LevelManager_03 : LevelManagerBase
         }
         else if (EventIndex == 5) //回到關卡選擇
         {
+            Debug.Log("Level 03 is done");
             LoadingHandler.Instance.ChangeScene("LevelMenu");
         }
     }

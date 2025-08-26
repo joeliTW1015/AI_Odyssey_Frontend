@@ -101,12 +101,13 @@ public class FishingGameManager : LevelManagerBase
             lineRenderer.SetPosition(1, fixedpoint.position); // 設置魚線的終點
         }
         SilverFishCountText.text = 0.ToString();
-        DialogueManager.Instance.StartDialogue(startDialogue); // 開始釣魚的對話
+        
     }
 
     void Start()
     {
         GenerateFish();
+        DialogueManager.Instance.StartDialogue(startDialogue); // 開始釣魚的對話
     }
     void GenerateFish()
     {
@@ -131,11 +132,11 @@ public class FishingGameManager : LevelManagerBase
         currentFishIndex = fish.fishIndex;
         fish.isCatched = true;
         fish.DisablePhysics(); // 禁用魚的物理效果防止其和其他魚碰撞
-        
-        GetPredictionResultFromBackend(fish.fishIndex); //後端有魚的圖片
+
+        StartCoroutine(GetPredictionResultFromBackend(fish.fishIndex)); //後端有魚的圖片
     }
 
-    async void GetPredictionResultFromBackend(int fishIndex)
+    IEnumerator GetPredictionResultFromBackend(int fishIndex)
     {
         LoadingHandler.Instance.ShowLoadingScreen();
         string url = fishRecognitionURL + PlayerPrefs.GetString("username", "NO_Name");
@@ -148,7 +149,7 @@ public class FishingGameManager : LevelManagerBase
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", "Bearer " + PlayerPrefs.GetString("key", ""));
         Debug.Log("Sending fish recognition request: " + JsonBody);
-        await request.SendWebRequest();
+        yield return request.SendWebRequest();
         bool errorFlag = true;
         if (request.result == UnityWebRequest.Result.Success)
         {
@@ -169,7 +170,7 @@ public class FishingGameManager : LevelManagerBase
             // 處理錯誤的回應
             Debug.LogError("Fish recognition error: " + request.error);
             LoadingHandler.Instance.ShowLoadingScreen("魚類識別失敗，請稍後再試。");
-            await Task.Delay(2000); // 等待2秒
+            yield return new WaitForSeconds(2); // 等待2秒
             Fish fish = hook.GetComponentInChildren<Fish>();
             //把魚放走
             fishCaughtPanel.SetActive(false); // 隱藏捕到魚的面板
@@ -182,7 +183,7 @@ public class FishingGameManager : LevelManagerBase
             }
             state = 4;
             LoadingHandler.Instance.HideLoadingScreen();
-            return;
+            yield break;
         }
         //文字範例: 判定結果：銀龍魚\n信心：98%
         reconnitionOutcomeText.text = "判定結果：" + (predicTypeResult == 0 ? "銀龍魚" : "吳郭魚") + "\n信心：" + confidence + "%";
@@ -378,6 +379,10 @@ public class FishingGameManager : LevelManagerBase
             else
             {
                 Debug.Log("Level 02 fishing completed!");
+                LevelManager_02.isSecondTimeEntered = false; // Set the flag to true after second time fishing
+                LevelManager_02.haveGetRod = false;
+                LevelManager_02.haveKnownThePhoto = false;
+                LevelManager_02.haveOpenedBox = false;
                 LoadingHandler.Instance.ChangeScene("LevelMenu");
                 //處理第二次釣魚完成後
             }

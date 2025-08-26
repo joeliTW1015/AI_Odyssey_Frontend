@@ -13,11 +13,11 @@ public class StartSceneManager : MonoBehaviour
     [SerializeField] Button RegisterButton;
     void Awake()
     {
-        LoginButton.onClick.AddListener(SubmitLogin);
-        RegisterButton.onClick.AddListener(SubmitRegister);
+        LoginButton.onClick.AddListener(() => StartCoroutine(SubmitLogin()));
+        RegisterButton.onClick.AddListener(() => StartCoroutine(SubmitRegister()));
     }
 
-    async void SubmitRegister()
+    IEnumerator SubmitRegister()
     {
         string userName = userNameInputField.text;
         string password = passwordInputField.text;
@@ -25,7 +25,7 @@ public class StartSceneManager : MonoBehaviour
         {
             Debug.LogError("Username or password cannot be empty.");
             StartCoroutine(ShowError("使用者名稱或密碼不能為空。"));
-            return;
+            yield break;
         }
         string registerJson = JsonConvert.SerializeObject(new { username = userName, password = password });
         LoadingHandler.Instance.ShowLoadingScreen("正在註冊...");
@@ -36,7 +36,7 @@ public class StartSceneManager : MonoBehaviour
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
 
-        await request.SendWebRequest();
+        yield return request.SendWebRequest();
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             StartCoroutine(ShowError(request.error));
@@ -49,7 +49,7 @@ public class StartSceneManager : MonoBehaviour
         }
     }
 
-    async void SubmitLogin()
+    IEnumerator SubmitLogin()
     {
         string userName = userNameInputField.text;
         string password = passwordInputField.text;
@@ -57,7 +57,7 @@ public class StartSceneManager : MonoBehaviour
         {
             Debug.LogError("Username or password cannot be empty.");
             StartCoroutine(ShowError("使用者名稱或密碼不能為空。"));
-            return;
+            yield break;
         }
         string loginJson = JsonConvert.SerializeObject(new { username = userName, password = password });
         LoadingHandler.Instance.ShowLoadingScreen("正在登入...");
@@ -68,7 +68,7 @@ public class StartSceneManager : MonoBehaviour
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
 
-        await request.SendWebRequest();
+        yield return request.SendWebRequest();
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             StartCoroutine(ShowError(request.error));

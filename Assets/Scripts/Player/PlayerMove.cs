@@ -9,7 +9,6 @@ public class PlayerMove : MonoBehaviour
     SpriteRenderer spriteRenderer;
     [SerializeField] FixedJoystick moveVirtualJoystick; // For mobile controls, if needed
     [SerializeField] InputActionReference moveAction;
-    [SerializeField] bool usingMobileControls = false;
     [SerializeField] float moveSpeed = 5f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -23,23 +22,14 @@ public class PlayerMove : MonoBehaviour
 
     void Move()
     {
-        if (usingMobileControls)
+        moveDirection = Vector2.zero;
+        moveDirection += new Vector2(moveVirtualJoystick.Horizontal, moveVirtualJoystick.Vertical).normalized;
+        //moveDirection += moveAction.action.ReadValue<Vector2>();
+        if (moveDirection.magnitude < 0.01f)
         {
-            // Use the virtual joystick for movement
-            moveDirection = new Vector2(moveVirtualJoystick.Horizontal, moveVirtualJoystick.Vertical).normalized;
-            if (moveDirection.magnitude < 0.01f)
-            {
-                moveDirection = Vector2.zero; // Prevent small movements
-            }
+            moveDirection = Vector2.zero; // Prevent small movements
         }
-        else
-        {
-            moveDirection = moveAction.action.ReadValue<Vector2>();
-            if (moveDirection.magnitude < 0.01f)
-            {
-                moveDirection = Vector2.zero; // Prevent small movements
-            }    
-        }
+        
         rb.linearVelocity = moveDirection * moveSpeed;
         animator.SetFloat("speed", moveDirection.magnitude);
         // Flip the player sprite based on the direction of movement

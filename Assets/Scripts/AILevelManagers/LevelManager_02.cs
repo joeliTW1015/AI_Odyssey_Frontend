@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
+using System.Collections;
+
 
 
 [System.Serializable]
@@ -165,8 +166,8 @@ public class LevelManager_02 : LevelManagerBase
         else if (EventIndex == 7) // finish labeling
         {
             labelingInterface.SetActive(false);
-            SubmitLabelsToBackend();
-            
+            StartCoroutine(SubmitLabelsToBackend());
+
         }
         else
         {
@@ -235,7 +236,7 @@ public class LevelManager_02 : LevelManagerBase
         GetFishSpriteFromTrainSet(); // Get the next fish sprite from the training set  
     }
 
-    async void SubmitLabelsToBackend()
+    IEnumerator SubmitLabelsToBackend()
     {
         LoadingHandler.Instance.ShowLoadingScreen("正在上傳標記資料...");
         string url = submitLabelUrl + PlayerPrefs.GetString("username", "NO_USERNAME!"); 
@@ -248,7 +249,7 @@ public class LevelManager_02 : LevelManagerBase
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", "Bearer " + PlayerPrefs.GetString("key")); //使用存儲的token才能上傳標記資料
 
-        await request.SendWebRequest();
+        yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success)
         {
@@ -258,9 +259,9 @@ public class LevelManager_02 : LevelManagerBase
         {
             Debug.LogError("Error submitting labels: " + request.error);
             LoadingHandler.Instance.ShowLoadingScreen("上傳標記資料失敗");
-            await Task.Delay(2000); // Wait for 2 seconds to show the error message
+            yield return new WaitForSeconds(2); // Wait for 2 seconds to show the error message
             LoadingHandler.Instance.HideLoadingScreen();
-            return;
+            yield break;
         }
 
         LoadingHandler.Instance.HideLoadingScreen();

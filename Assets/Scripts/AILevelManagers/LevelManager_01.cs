@@ -102,7 +102,7 @@ public class LevelManager_01 : LevelManagerBase
         {
             // Process the input text
             Debug.Log("Submitted: " + inputText);
-            GetImageFromBackend(inputText);
+            StartCoroutine(GetImageFromBackend(inputText));
         }
         else
         {
@@ -116,7 +116,7 @@ public class LevelManager_01 : LevelManagerBase
         CookingInterface.SetActive(false);
     }
 
-    async void GetImageFromBackend(string prompt)
+    IEnumerator GetImageFromBackend(string prompt)
     {
         LoadingHandler.Instance.ShowLoadingScreen();
 
@@ -128,14 +128,14 @@ public class LevelManager_01 : LevelManagerBase
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", "Bearer " + PlayerPrefs.GetString("key")); //使用存儲的token才能獲取圖片
-        await request.SendWebRequest();
+        yield return request.SendWebRequest();
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             //show error message for 2 seconds
             LoadingHandler.Instance.ShowLoadingScreen("獲取圖片失敗: " + request.error);
-            await Task.Delay(2000);
+            yield return new WaitForSeconds(2);
             LoadingHandler.Instance.HideLoadingScreen();
-            return;
+            yield break;
         }
         else
         {
@@ -143,13 +143,13 @@ public class LevelManager_01 : LevelManagerBase
             string responseText = request.downloadHandler.text;
             string imageUrl = JObject.Parse(responseText)["image_url"].ToString();
             UnityWebRequest imageRequest = UnityWebRequestTexture.GetTexture(imageUrl);
-            await imageRequest.SendWebRequest();
+            yield return imageRequest.SendWebRequest();
             if (imageRequest.result == UnityWebRequest.Result.ConnectionError || imageRequest.result == UnityWebRequest.Result.ProtocolError)
             {
                 LoadingHandler.Instance.ShowLoadingScreen("獲取圖片失敗: " + request.error);
-                await Task.Delay(2000);
+                yield return new WaitForSeconds(2);
                 LoadingHandler.Instance.HideLoadingScreen();
-                return;
+                yield break;
             }
             else
             {
@@ -173,7 +173,7 @@ public class LevelManager_01 : LevelManagerBase
         isJudging = true;
         JudgingInterface.SetActive(true);
         foodImage.sprite = Sprite.Create(outcomeImageTexture, new Rect(0, 0, outcomeImageTexture.width, outcomeImageTexture.height), new Vector2(0.5f, 0.5f));
-        GetReviewFromBackend();
+        StartCoroutine(GetReviewFromBackend());
     }
 
     void EndJudging()
@@ -203,7 +203,7 @@ public class LevelManager_01 : LevelManagerBase
         PlayerPrefs.SetInt("level_1_score_" + (currentDishIndex + 1), currentScore); // Save the score for the current dish
     }
 
-    async void GetReviewFromBackend()
+    IEnumerator GetReviewFromBackend()
     {
         //placeholder for actual backend call
         Debug.Log("Getting review from backend for image.");
@@ -215,16 +215,16 @@ public class LevelManager_01 : LevelManagerBase
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Authorization", "Bearer " + PlayerPrefs.GetString("key")); //使用存儲的token才能獲取評價
         request.SetRequestHeader("Content-Type", "application/json");
-        await request.SendWebRequest();
+        yield return request.SendWebRequest();
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.LogError("Error getting review: " + request.error);
             LoadingHandler.Instance.ShowLoadingScreen("獲取評價失敗: " + request.error);
-            await Task.Delay(2000);
+            yield return new WaitForSeconds(2);
             LoadingHandler.Instance.HideLoadingScreen();
             JudgingInterface.SetActive(false);
             isJudging = false;
-            return;
+            yield break;
         }
         JObject responseJson = JObject.Parse(request.downloadHandler.text);
         string feedback = responseJson["analysis"].ToString();

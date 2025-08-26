@@ -60,7 +60,7 @@ public class DialogueTrigger : MonoBehaviour
         //mobile input handling
         if (playerInRange)
         {
-            
+
             if (Input.touchCount > 0)
             {
                 Touch[] touches = Input.touches;
@@ -73,6 +73,17 @@ public class DialogueTrigger : MonoBehaviour
                         TriggerDialogue();
                         break;
                     }
+                }
+            }
+            else if (Input.GetMouseButtonDown(0))
+            {
+                Vector2 mousePos = Input.mousePosition;
+                Vector2 exMarkScreenPos = Camera.main.WorldToScreenPoint(exclamationMark.transform.position);
+                if (Vector2.Distance(mousePos, exMarkScreenPos) < clickRadius)
+                {
+                    playerInRange = false;
+                    exclamationMark.SetActive(false);
+                    TriggerDialogue();
                 }
             }
         }
