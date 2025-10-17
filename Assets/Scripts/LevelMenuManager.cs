@@ -11,7 +11,7 @@ public class LevelMenuManager : MonoBehaviour
     {
         level1Button.onClick.AddListener(() => LoadLevel("AILevel01"));
         level2Button.onClick.AddListener(() => LoadLevel("AILevel02_train"));
-        level3Button.onClick.AddListener(() => LoadLevel("AILevel03"));
+        //level3Button.onClick.AddListener(() => LoadLevel("AILevel03"));
     }
 
     void LoadLevel(string levelName)

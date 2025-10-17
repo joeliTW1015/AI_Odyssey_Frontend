@@ -20,7 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/AILevel02_fishing.unity
     guid: dbeac7727410fc94c9cd36b9db25f309
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/AILevel03.unity
     guid: 5de6195632430a4419b474baef7b76d7
   m_configObjects:

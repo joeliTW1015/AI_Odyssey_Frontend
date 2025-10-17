@@ -187,7 +187,6 @@ public class DialogueManager : MonoBehaviour
 
     void EndDialogue()
     {
-        PlayerMove.canMove = true;
         dialoguePanel.SetActive(false);
         scrollContentPanel.SetActive(false);
         currentLineIndex = 0;
@@ -205,7 +204,10 @@ public class DialogueManager : MonoBehaviour
             Debug.Log("Triggering event after dialogue ends.");
             FindFirstObjectByType<LevelManagerBase>()?.ActivateEvent(currentDialogueSequence.triggeredEventIndex);
             //?表示這是一個空值條件運算符，當前面為null時不會拋出異常，而是返回null
-            
+        }
+        else
+        {
+            PlayerMove.canMove = true;
         }
     }
 

@@ -100,6 +100,7 @@ public class LevelManager_02 : LevelManagerBase
 
     public override void ActivateEvent(int EventIndex)
     {
+        PlayerMove.canMove = true; //後面如果沒有特別設定，預設都可以移動
         if (EventIndex == 1) // interact with the fishing pool
         {
             if (!haveGetRod)
@@ -143,6 +144,7 @@ public class LevelManager_02 : LevelManagerBase
         }
         else if (EventIndex == 4) // Activate Labeling interface
         {
+            PlayerMove.canMove = false;
             labelingInterface.SetActive(true);
             currentNormalFishIndex = 0; // Reset the index for normal fish
             currentSilverFishIndex = 0; // Reset the index for silver fish

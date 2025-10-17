@@ -13,6 +13,7 @@ public class Guide : MonoBehaviour
             Destroy(Instance);
         }
         Instance = this;
+        guideText.text = "當前目標：\n";
     }
 
     public void SetGuideText(string text)

@@ -87,6 +87,7 @@ public class LevelManager_01 : LevelManagerBase
         }
         else if (EventIndex == 2) // Start the judging process
         {
+            PlayerMove.canMove = false;
             StartJudging();
         }
         else if (EventIndex == 3) // End the level
@@ -118,6 +119,7 @@ public class LevelManager_01 : LevelManagerBase
     {
         //保留圖片和輸入框文字
         CookingInterface.SetActive(false);
+        PlayerMove.canMove = true;
     }
 
     IEnumerator GetImageFromBackend(string prompt)

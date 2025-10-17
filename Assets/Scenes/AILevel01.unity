@@ -7908,6 +7908,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67a8954d310df66478bebc9889703405, type: 3}
+--- !u!1 &581784977 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5469194279547526162, guid: 67a8954d310df66478bebc9889703405, type: 3}
+  m_PrefabInstance: {fileID: 581784976}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &597848648
 GameObject:
   m_ObjectHideFlags: 0
@@ -17749,6 +17754,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 828430252}
     m_Modifications:
     - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
+      propertyPath: nameTextObject
+      value: 
+      objectReference: {fileID: 3600854635950649739}
+    - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: dialogueSequence.guideTextOnEnd
       value: "\u5C07\u505A\u597D\u7684\u6599\u7406\u7D66\u9910\u5EF3\u7684\u5EDA\u5E2B\u6AA2\u67E5"
       objectReference: {fileID: 0}
@@ -24525,6 +24534,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1315101676}
     m_Modifications:
     - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
+      propertyPath: nameTextObject
+      value: 
+      objectReference: {fileID: 1932374545}
+    - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: dialogueSequence.lines.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -25449,6 +25462,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67a8954d310df66478bebc9889703405, type: 3}
+--- !u!1 &1932374545 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5469194279547526162, guid: 67a8954d310df66478bebc9889703405, type: 3}
+  m_PrefabInstance: {fileID: 1932374544}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1939222741
 GameObject:
   m_ObjectHideFlags: 0
@@ -27776,6 +27794,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
+      propertyPath: nameTextObject
+      value: 
+      objectReference: {fileID: 581784977}
+    - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: dialogueSequence.guideTextOnEnd
       value: "\u53BB\u770B\u770B\u9B54\u6CD5\u6599\u7406\u6A5F\u5982\u4F55\u4F7F\u7528\uFF0C\u4E26\u505A\u51FA\u7B2C\u4E00\u9053\u83DC\u991A"
       objectReference: {fileID: 0}
@@ -28077,6 +28099,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67a8954d310df66478bebc9889703405, type: 3}
+--- !u!1 &3600854635950649739 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5469194279547526162, guid: 67a8954d310df66478bebc9889703405, type: 3}
+  m_PrefabInstance: {fileID: 3600854635950649738}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7654887783850661640
 PrefabInstance:
   m_ObjectHideFlags: 0
