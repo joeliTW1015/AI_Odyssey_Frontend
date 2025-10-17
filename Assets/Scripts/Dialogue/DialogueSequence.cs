@@ -23,4 +23,5 @@ public class DialogueSequence
     public List<DialogueLine> lines;
     public bool triggerEventWhenEnding = false; // Whether to trigger the event when the dialogue ends
     public int triggeredEventIndex = 0; // Index of the event to trigger when the dialogue ends
+    [TextArea] public string guideTextOnEnd = ""; // Guide text to display when the dialogue ends
 }

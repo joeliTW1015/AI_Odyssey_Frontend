@@ -238,7 +238,7 @@ public class LevelManager_02 : LevelManagerBase
 
     IEnumerator SubmitLabelsToBackend()
     {
-        LoadingHandler.Instance.ShowLoadingScreen("正在上傳標記資料...");
+        LoadingHandler.Instance.ShowLoadingScreen("正在訓練辨識模型...");
         string url = submitLabelUrl + PlayerPrefs.GetString("username", "NO_USERNAME!"); 
         UnityWebRequest request = new UnityWebRequest(url, "POST");
         string jsonBody = JsonConvert.SerializeObject(trainDatasetWrapper, Formatting.Indented);

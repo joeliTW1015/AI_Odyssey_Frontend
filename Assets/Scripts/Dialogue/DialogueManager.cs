@@ -46,6 +46,7 @@ public class DialogueManager : MonoBehaviour
     public void StartDialogue(DialogueSequence dialogueSequence)
     {
         Debug.Log("Starting dialogue");
+        PlayerMove.canMove = false;
         currentLineIndex = 0;
         currentDialogueSequence = dialogueSequence;
         if (currentDialogueSequence != null && currentDialogueSequence.lines.Count > 0)
@@ -186,10 +187,16 @@ public class DialogueManager : MonoBehaviour
 
     void EndDialogue()
     {
+        PlayerMove.canMove = true;
         dialoguePanel.SetActive(false);
         scrollContentPanel.SetActive(false);
         currentLineIndex = 0;
 
+        // Set guide text if specified
+        if (currentDialogueSequence != null && !string.IsNullOrEmpty(currentDialogueSequence.guideTextOnEnd))
+        {
+            Guide.Instance.SetGuideText(currentDialogueSequence.guideTextOnEnd);
+        }
 
         // Trigger event if specified
         if (currentDialogueSequence != null && currentDialogueSequence.triggerEventWhenEnding)

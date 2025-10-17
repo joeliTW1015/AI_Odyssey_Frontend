@@ -43,7 +43,7 @@ public class RagPanelManager : MonoBehaviour
 
     IEnumerator GetResponseFromBackend(string userInput)
     {
-        LoadingHandler.Instance.ShowLoadingScreen();
+        LoadingHandler.Instance.ShowLoadingScreen("機器人檢索中...");
         UnityWebRequest request = new UnityWebRequest(currentBookIndex == 0 ? backendUrl_1 : backendUrl_2, "POST");
         string jsonBody = JsonConvert.SerializeObject(new { query = userInput });
         request.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(jsonBody));

@@ -22,8 +22,9 @@ public class FishInfo
 
 public class FishingGameManager : LevelManagerBase
 {
-    [Header ("URL")]
+    [Header("URL")]
     [SerializeField] string fishRecognitionURL; // 魚類識別的URL
+    [SerializeField] string scoreBoardURL; // 分數板的URL
     [Header("Dialogues")]
     [SerializeField] DialogueSequence startDialogue; // 開始釣魚的對話
     [SerializeField] DialogueSequence firstTimeEndDialogue; // 第一次結束釣魚的對話
@@ -101,7 +102,7 @@ public class FishingGameManager : LevelManagerBase
             lineRenderer.SetPosition(1, fixedpoint.position); // 設置魚線的終點
         }
         SilverFishCountText.text = 0.ToString();
-        
+
     }
 
     void Start()
@@ -138,7 +139,7 @@ public class FishingGameManager : LevelManagerBase
 
     IEnumerator GetPredictionResultFromBackend(int fishIndex)
     {
-        LoadingHandler.Instance.ShowLoadingScreen();
+        LoadingHandler.Instance.ShowLoadingScreen("魔法魚鉤辨識中...");
         string url = fishRecognitionURL + PlayerPrefs.GetString("username", "NO_Name");
         UnityWebRequest request = new UnityWebRequest(url, "POST");
         string fishTypeName = fishList[fishIndex].fishType == 0 ? "銀龍魚" : "吳郭魚";
@@ -272,7 +273,7 @@ public class FishingGameManager : LevelManagerBase
             hook.transform.position = shakePosition;
             // 更新QTE進度條
             qteProgress -= qteProgressDropSpeed * Time.deltaTime; // 進度條下降
-            
+
             if (qteProgress < 0f)
             {
                 Fish fish = hook.GetComponentInChildren<Fish>();
@@ -347,7 +348,7 @@ public class FishingGameManager : LevelManagerBase
         }
     }
 
-    IEnumerator ShowResult( int fishType, Sprite realFishSprite)
+    IEnumerator ShowResult(int fishType, Sprite realFishSprite)
     {
         resultPanel.SetActive(true);
         realFishImage.sprite = realFishSprite;
@@ -383,10 +384,36 @@ public class FishingGameManager : LevelManagerBase
                 LevelManager_02.haveGetRod = false;
                 LevelManager_02.haveKnownThePhoto = false;
                 LevelManager_02.haveOpenedBox = false;
-                LoadingHandler.Instance.ChangeScene("LevelMenu");
-                //處理第二次釣魚完成後
+                int totalScore = silverfishCount * 20; // 每條銀龍魚20分
+                StartCoroutine(SendScoreToBackend(totalScore));
             }
         }
     }
-        
+
+
+    IEnumerator SendScoreToBackend(int score)
+    {
+        LoadingHandler.Instance.ShowLoadingScreen("正在上傳分數...");
+        Debug.Log("Sending score to backend: " + score);
+        string url = scoreBoardURL + PlayerPrefs.GetString("username") + "/score";
+        UnityWebRequest request = new UnityWebRequest(url, "PUT");
+        string jsonBody = JsonConvert.SerializeObject(new { score = score, level = 2 });
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", "Bearer " + PlayerPrefs.GetString("key")); //使用存儲的token才能發送分數
+        yield return request.SendWebRequest();
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Error sending score: " + request.error);
+            yield break;
+        }
+        else
+        {
+            Debug.Log("Score successfully sent to backend.");
+        }
+        LoadingHandler.Instance.HideLoadingScreen();
+        LoadingHandler.Instance.ChangeScene("LevelMenu");
+    }
 }

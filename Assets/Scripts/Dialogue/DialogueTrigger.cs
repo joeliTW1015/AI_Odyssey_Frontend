@@ -6,6 +6,7 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] float clickRadius = 100f; // Radius within which the player can trigger dialogue
     public DialogueSequence dialogueSequence;
     [SerializeField] GameObject exclamationMark;
+    [SerializeField] GameObject nameTextObject;
     bool playerInRange;
 
     void Start()
@@ -15,6 +16,7 @@ public class DialogueTrigger : MonoBehaviour
             exclamationMark.SetActive(false);
         }
         playerInRange = false;
+        nameTextObject.SetActive(true);
     }
 
     // Method to trigger the dialogue sequence
@@ -43,6 +45,7 @@ public class DialogueTrigger : MonoBehaviour
         {
             playerInRange = true;
             exclamationMark.SetActive(true);
+            nameTextObject.SetActive(false);
         }
     }
 
@@ -52,6 +55,7 @@ public class DialogueTrigger : MonoBehaviour
         {
             playerInRange = false;
             exclamationMark.SetActive(false);
+            nameTextObject.SetActive(true);
         }
     }
 

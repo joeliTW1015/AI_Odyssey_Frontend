@@ -39,12 +39,13 @@ public class LevelManager_01 : LevelManagerBase
     [SerializeField] Slider scoreSlider;
     [SerializeField][Range(0, 100)] int successThreshold = 60; // Threshold for success in judging
     [SerializeField] Button quitJudgingInterfaceButton;
-    
+
     bool isJudging = false;
     int currentScore = 0;
     [Header("Backend URL")]
     [SerializeField] string stringToImageUrl;
     [SerializeField] string imageToStringUrl;
+    [SerializeField] string scoreBoardURL;
 
     [Header("Dialogue")]
     [SerializeField] DialogueSequence startDialogue;
@@ -52,6 +53,8 @@ public class LevelManager_01 : LevelManagerBase
     [SerializeField] DialogueSequence successDialogue;
     [SerializeField] DialogueSequence failureDialogue;
     [SerializeField] DialogueSequence noInputDialogue;
+
+    int totalScore = 0;
 
     private void Awake()
     {
@@ -66,6 +69,7 @@ public class LevelManager_01 : LevelManagerBase
         submitButton.onClick.AddListener(SubmitPrompt);
         quitCookingInterfaceButton.onClick.AddListener(QuitCookingInterface);
         quitJudgingInterfaceButton.onClick.AddListener(EndJudging);
+        totalScore = 0;
     }
 
     private void Start()
@@ -118,7 +122,7 @@ public class LevelManager_01 : LevelManagerBase
 
     IEnumerator GetImageFromBackend(string prompt)
     {
-        LoadingHandler.Instance.ShowLoadingScreen();
+        LoadingHandler.Instance.ShowLoadingScreen("努力烹調中");
 
         Debug.Log("Getting image from backend for prompt: " + prompt);
         UnityWebRequest request = new UnityWebRequest(stringToImageUrl, "POST");
@@ -186,6 +190,7 @@ public class LevelManager_01 : LevelManagerBase
         JudgingInterface.SetActive(false);
         if (currentScore >= successThreshold)
         {
+            totalScore += currentScore;
             currentDishIndex++;
             if (currentDishIndex < dishes.Length)
             {
@@ -200,14 +205,14 @@ public class LevelManager_01 : LevelManagerBase
         {
             DialogueManager.Instance.StartDialogue(failureDialogue);
         }
-        PlayerPrefs.SetInt("level_1_score_" + (currentDishIndex + 1), currentScore); // Save the score for the current dish
+        PlayerPrefs.SetInt("level_1_score_" + (currentDishIndex), currentScore); // Save the score for the current dish
     }
 
     IEnumerator GetReviewFromBackend()
     {
         //placeholder for actual backend call
         Debug.Log("Getting review from backend for image.");
-        LoadingHandler.Instance.ShowLoadingScreen();
+        LoadingHandler.Instance.ShowLoadingScreen("廚師評分中...");
         UnityWebRequest request = new UnityWebRequest(imageToStringUrl, "POST");
         string jsonBody = JsonConvert.SerializeObject(new { image_hash = outcomeImageName, dish_expect = dishes[currentDishIndex].dishRequirements });
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
@@ -240,6 +245,33 @@ public class LevelManager_01 : LevelManagerBase
     private void LevelComplete()
     {
         Debug.Log("Level 1 complete!");
+        totalScore /= 3; // Calculate average score
+        StartCoroutine(SendScoreToBackend(totalScore));
+    }
+
+    IEnumerator SendScoreToBackend(int score)
+    {
+        LoadingHandler.Instance.ShowLoadingScreen("正在上傳分數...");
+        Debug.Log("Sending score to backend: " + score);
+        string url = scoreBoardURL + PlayerPrefs.GetString("username") + "/score";
+        UnityWebRequest request = new UnityWebRequest(url, "PUT");
+        string jsonBody = JsonConvert.SerializeObject(new { score = score, level = 1 });
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", "Bearer " + PlayerPrefs.GetString("key")); //使用存儲的token才能發送分數
+        yield return request.SendWebRequest();
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Error sending score: " + request.error);
+            yield break;
+        }
+        else
+        {
+            Debug.Log("Score successfully sent to backend.");
+        }
+        LoadingHandler.Instance.HideLoadingScreen();
         LoadingHandler.Instance.ChangeScene("LevelMenu");
     }
 }

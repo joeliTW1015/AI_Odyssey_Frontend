@@ -34,7 +34,7 @@ public class ChatBotPanel : MonoBehaviour
 
     IEnumerator GetResponseFromBackend(string userInput)
     {
-        LoadingHandler.Instance.ShowLoadingScreen();
+        LoadingHandler.Instance.ShowLoadingScreen("機器人思考中...");
         UnityWebRequest request = new UnityWebRequest(backendUrl, "POST");
         string jsonBody = JsonConvert.SerializeObject(new { question = userInput });
         request.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(jsonBody));
