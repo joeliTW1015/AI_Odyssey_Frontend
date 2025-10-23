@@ -169,6 +169,12 @@ public class DialogueManager : MonoBehaviour
 
     void NextLine()
     {
+        if (currentDialogueSequence == null)
+        {
+            Debug.LogWarning("No current dialogue sequence.");
+            return;
+        }
+        
         foreach (GameObject content in tmpContentObjects)
         {
             Destroy(content);
@@ -190,6 +196,7 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
         scrollContentPanel.SetActive(false);
         currentLineIndex = 0;
+        currentDialogueSequence = null;
 
         // Set guide text if specified
         if (currentDialogueSequence != null && !string.IsNullOrEmpty(currentDialogueSequence.guideTextOnEnd))
@@ -211,5 +218,13 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    
+    void Update()
+    {
+        //任意鍵被按下時，進入下一行對話
+        if (dialoguePanel.activeSelf && Input.anyKeyDown)
+        {
+            NextLine();
+        }
+    }
+
 }

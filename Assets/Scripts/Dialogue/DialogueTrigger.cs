@@ -3,14 +3,24 @@ using UnityEngine;
 public class DialogueTrigger : MonoBehaviour
 {
     [SerializeField] bool retriggerable = true; // Allows the dialogue to be triggered multiple times
-    [SerializeField] float clickRadius = 100f; // Radius within which the player can trigger dialogue
+    [SerializeField] float clickRadius = 300f; // Radius within which the player can trigger dialogue
     public DialogueSequence dialogueSequence;
     [SerializeField] GameObject exclamationMark;
     [SerializeField] GameObject nameTextObject;
     bool playerInRange;
+    Vector2 touchPosition;
 
     void Start()
     {
+        if (transform.parent != null)
+        {
+            touchPosition = transform.parent.position;
+        }
+        else
+        {
+            touchPosition = transform.position;
+        }
+        
         if (exclamationMark != null)
         {
             exclamationMark.SetActive(false);
@@ -70,7 +80,7 @@ public class DialogueTrigger : MonoBehaviour
                 Touch[] touches = Input.touches;
                 foreach (Touch touch in touches)
                 {
-                    if (touch.phase == TouchPhase.Began && Vector2.Distance(touch.position, Camera.main.WorldToScreenPoint(exclamationMark.transform.position)) < clickRadius)
+                    if (touch.phase == TouchPhase.Began && Vector2.Distance(touch.position, Camera.main.WorldToScreenPoint(touchPosition)) < clickRadius)
                     {
                         playerInRange = false; // Reset playerInRange to prevent multiple triggers
                         exclamationMark.SetActive(false);
@@ -82,13 +92,18 @@ public class DialogueTrigger : MonoBehaviour
             else if (Input.GetMouseButtonDown(0))
             {
                 Vector2 mousePos = Input.mousePosition;
-                Vector2 exMarkScreenPos = Camera.main.WorldToScreenPoint(exclamationMark.transform.position);
-                if (Vector2.Distance(mousePos, exMarkScreenPos) < clickRadius)
+                if (Vector2.Distance(mousePos, Camera.main.WorldToScreenPoint(touchPosition)) < clickRadius)
                 {
                     playerInRange = false;
                     exclamationMark.SetActive(false);
                     TriggerDialogue();
                 }
+            }
+            else if (Input.GetKeyDown(KeyCode.Space))
+            {
+                playerInRange = false;
+                exclamationMark.SetActive(false);
+                TriggerDialogue();
             }
         }
     }

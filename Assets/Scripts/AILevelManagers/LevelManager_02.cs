@@ -259,6 +259,7 @@ public class LevelManager_02 : LevelManagerBase
         }
         else
         {
+            PlayerMove.canMove = true;
             Debug.LogError("Error submitting labels: " + request.error);
             LoadingHandler.Instance.ShowLoadingScreen("上傳標記資料失敗");
             yield return new WaitForSeconds(2); // Wait for 2 seconds to show the error message

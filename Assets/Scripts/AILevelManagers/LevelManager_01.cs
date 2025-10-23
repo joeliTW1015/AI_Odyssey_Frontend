@@ -152,6 +152,7 @@ public class LevelManager_01 : LevelManagerBase
             yield return imageRequest.SendWebRequest();
             if (imageRequest.result == UnityWebRequest.Result.ConnectionError || imageRequest.result == UnityWebRequest.Result.ProtocolError)
             {
+                PlayerMove.canMove = true;
                 LoadingHandler.Instance.ShowLoadingScreen("獲取圖片失敗: " + request.error);
                 yield return new WaitForSeconds(2);
                 LoadingHandler.Instance.HideLoadingScreen();
@@ -225,6 +226,7 @@ public class LevelManager_01 : LevelManagerBase
         yield return request.SendWebRequest();
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
+            PlayerMove.canMove = true;
             Debug.LogError("Error getting review: " + request.error);
             LoadingHandler.Instance.ShowLoadingScreen("獲取評價失敗: " + request.error);
             yield return new WaitForSeconds(2);

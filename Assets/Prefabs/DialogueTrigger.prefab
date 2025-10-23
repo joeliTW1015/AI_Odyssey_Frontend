@@ -52,6 +52,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -73,6 +75,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1012601703
   m_SortingLayer: 5
   m_SortingOrder: 0
@@ -179,10 +182,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 189281caa7ad95d458f6484d055f27ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  retriggerable: 1
   clickRadius: 100
   dialogueSequence:
     numberOfSpeakers: 1
     speakerCharacterNames: []
     lines: []
-    triggerInterfaceWhenEnding: 0
+    triggerEventWhenEnding: 0
+    triggeredEventIndex: 0
+    guideTextOnEnd: 
   exclamationMark: {fileID: 2623327306529393293}
+  nameTextObject: {fileID: 0}

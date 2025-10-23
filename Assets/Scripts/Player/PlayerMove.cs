@@ -22,14 +22,16 @@ public class PlayerMove : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        //判斷裝置是否有鍵盤
-        if (Keyboard.current != null)
+        //判斷裝置是否為平板或手機
+        if (SystemInfo.deviceType == DeviceType.Handheld)
         {
-            moveVirtualJoystick.gameObject.SetActive(false);
+            //啟用虛擬搖桿
+            moveVirtualJoystick.gameObject.SetActive(true);
         }
         else
         {
-            moveVirtualJoystick.gameObject.SetActive(true);
+            //關閉虛擬搖桿
+            moveVirtualJoystick.gameObject.SetActive(false);
         }
     }
 
