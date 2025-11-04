@@ -10,19 +10,6 @@ using System.Collections;
 
 
 
-[System.Serializable]
-public class TrainClass
-{
-    public string name;
-    public List<string> images;
-}
-
-[System.Serializable]
-public class TrainDatasetWrapper
-{
-    public List<TrainClass> train_dataset = new List<TrainClass>();
-}
-
 public class LevelManager_02 : LevelManagerBase
 {
     //GameProgress
@@ -31,10 +18,10 @@ public class LevelManager_02 : LevelManagerBase
     public static bool haveOpenedBox = false; //是否已經打開箱子
     public static bool haveKnownThePhoto = false; //是否已經和屋主對話過照片的事
 
+    public static float trainingAccuracy = 0f; //分類時分類分數(正確 + 1, 錯誤 -1)
+
 
     public static LevelManager_02 Instance;
-    [Header("URL")]
-    [SerializeField] string submitLabelUrl;
 
     [Header("TrainingSet")]
     [SerializeField] List<Sprite> normalFishSprites;
@@ -43,7 +30,6 @@ public class LevelManager_02 : LevelManagerBase
     int currentNormalFishIndex = 0;
     int currentSilverFishIndex = 0;
     int labelCount = 0;
-    TrainDatasetWrapper trainDatasetWrapper = new TrainDatasetWrapper();
 
     [Header("Dialogues")]
     [SerializeField] DialogueSequence firstTimeEnterInitDialogue;
@@ -149,11 +135,8 @@ public class LevelManager_02 : LevelManagerBase
             currentNormalFishIndex = 0; // Reset the index for normal fish
             currentSilverFishIndex = 0; // Reset the index for silver fish
             labelCount = 0; // Reset the label count
-            trainDatasetWrapper.train_dataset.Add(new TrainClass { name = "銀龍魚", images = new List<string>() });
-            trainDatasetWrapper.train_dataset.Add(new TrainClass { name = "吳郭魚", images = new List<string>() });
-
+            trainingAccuracy = 0f; // Reset training accuracy
             GetFishSpriteFromTrainSet(); // Get the fish sprite from the training set
-            //TODO: 處理兩次釣魚的差異
             labelCountText.text = $"目前資料量：\n{0}張圖片"; // Update the label count text
 
         }
@@ -168,8 +151,8 @@ public class LevelManager_02 : LevelManagerBase
         else if (EventIndex == 7) // finish labeling
         {
             labelingInterface.SetActive(false);
+            //假裝有把標記結果上傳到後端
             StartCoroutine(SubmitLabelsToBackend());
-
         }
         else
         {
@@ -212,19 +195,13 @@ public class LevelManager_02 : LevelManagerBase
     {
         //儲存標記結果
         Debug.Log("Labeled fish type: " + fishType);
-        if(fishType == 0)
+        if (fishType == currentFishType)
         {
-            //將sprite的原始檔案名稱加入到對應的魚類列表中
-            trainDatasetWrapper.train_dataset[0].images.Add("/銀龍魚/" + imageToBeLabeled.sprite.texture.name + ".jpg"); // Add to silver fish
-        }
-        else if (fishType == 1)
-        {
-            trainDatasetWrapper.train_dataset[1].images.Add("/吳郭魚/" + imageToBeLabeled.sprite.texture.name + ".jpg"); // Add to normal fish
+            trainingAccuracy += 1f; //正確標記
         }
         else
         {
-            Debug.LogError("Unknown fish type: " + fishType);
-            return;
+            trainingAccuracy -= 1f; //錯誤標記
         }
 
         labelCount++;
@@ -240,36 +217,12 @@ public class LevelManager_02 : LevelManagerBase
 
     IEnumerator SubmitLabelsToBackend()
     {
-        LoadingHandler.Instance.ShowLoadingScreen("正在訓練辨識模型...");
-        string url = submitLabelUrl + PlayerPrefs.GetString("username", "NO_USERNAME!"); 
-        UnityWebRequest request = new UnityWebRequest(url, "POST");
-        string jsonBody = JsonConvert.SerializeObject(trainDatasetWrapper, Formatting.Indented);
-        Debug.Log("Submitting labels to backend: " + jsonBody);
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
-        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-        request.SetRequestHeader("Authorization", "Bearer " + PlayerPrefs.GetString("key")); //使用存儲的token才能上傳標記資料
-
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            Debug.Log("Labels submitted successfully.");
-        }
-        else
-        {
-            PlayerMove.canMove = true;
-            Debug.LogError("Error submitting labels: " + request.error);
-            LoadingHandler.Instance.ShowLoadingScreen("上傳標記資料失敗");
-            yield return new WaitForSeconds(2); // Wait for 2 seconds to show the error message
-            LoadingHandler.Instance.HideLoadingScreen();
-            yield break;
-        }
-
+        // Simulate a delay for submitting labels
+        LoadingHandler.Instance.ShowLoadingScreen("魔法魚竿訓練中...");
+        yield return new WaitForSeconds(1.5f);
+        LoadingHandler.Instance.ShowLoadingScreen("訓練樣本數: " + labelCount + " 張\n訓練準確度: " + (trainingAccuracy / 30 * 100f).ToString("F2") + " %"); //30張才有完整效果
+        yield return new WaitForSeconds(2f);
         LoadingHandler.Instance.HideLoadingScreen();
         DialogueManager.Instance.StartDialogue(finishLabelingDialogue);
     }
-
-
 }

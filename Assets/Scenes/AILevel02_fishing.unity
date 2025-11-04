@@ -4742,7 +4742,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4925be96de8885746a670bdca2b85a29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fishRecognitionURL: https://ai-odyssey-backend-rbzz.onrender.com/module2/predict/
   scoreBoardURL: https://ai-odyssey-backend-rbzz.onrender.com/users/
   startDialogue:
     numberOfSpeakers: 2
@@ -4861,7 +4860,7 @@ MonoBehaviour:
   - fishType: 0
     fishSprite: {fileID: 6660783624410144326, guid: 673d002678841bc47baa2c98763776ad, type: 3}
   - fishType: 0
-    fishSprite: {fileID: 2960402581040015946, guid: be5e17b401c416d49875a614bf85a597, type: 3}
+    fishSprite: {fileID: 6894999169920593895, guid: 57912d13d718dcf41a35f5f3e38762c9, type: 3}
   - fishType: 0
     fishSprite: {fileID: 7157561037332017152, guid: 7d6cbf0a35edde046b03d4795cb283d2, type: 3}
   - fishType: 0

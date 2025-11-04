@@ -174,6 +174,11 @@ public class DialogueManager : MonoBehaviour
             Debug.LogWarning("No current dialogue sequence.");
             return;
         }
+        if(dialoguePanel.activeSelf == false)
+        {
+            Debug.LogWarning("Dialogue panel is not active.");
+            return;
+        }
         
         foreach (GameObject content in tmpContentObjects)
         {
@@ -196,7 +201,6 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
         scrollContentPanel.SetActive(false);
         currentLineIndex = 0;
-        currentDialogueSequence = null;
 
         // Set guide text if specified
         if (currentDialogueSequence != null && !string.IsNullOrEmpty(currentDialogueSequence.guideTextOnEnd))
@@ -208,7 +212,7 @@ public class DialogueManager : MonoBehaviour
         if (currentDialogueSequence != null && currentDialogueSequence.triggerEventWhenEnding)
         {
             // Logic to trigger the event can be added here
-            Debug.Log("Triggering event after dialogue ends.");
+            Debug.Log($"Triggering event {currentDialogueSequence.triggeredEventIndex} after dialogue ends.");
             FindFirstObjectByType<LevelManagerBase>()?.ActivateEvent(currentDialogueSequence.triggeredEventIndex);
             //?表示這是一個空值條件運算符，當前面為null時不會拋出異常，而是返回null
         }
@@ -220,8 +224,8 @@ public class DialogueManager : MonoBehaviour
 
     void Update()
     {
-        //任意鍵被按下時，進入下一行對話
-        if (dialoguePanel.activeSelf && Input.anyKeyDown)
+        //空白
+        if (dialoguePanel.activeSelf && Input.GetKeyDown(KeyCode.Space))
         {
             NextLine();
         }

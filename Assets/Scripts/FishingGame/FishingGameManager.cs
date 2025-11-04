@@ -23,7 +23,6 @@ public class FishInfo
 public class FishingGameManager : LevelManagerBase
 {
     [Header("URL")]
-    [SerializeField] string fishRecognitionURL; // 魚類識別的URL
     [SerializeField] string scoreBoardURL; // 分數板的URL
     [Header("Dialogues")]
     [SerializeField] DialogueSequence startDialogue; // 開始釣魚的對話
@@ -134,58 +133,17 @@ public class FishingGameManager : LevelManagerBase
         fish.isCatched = true;
         fish.DisablePhysics(); // 禁用魚的物理效果防止其和其他魚碰撞
 
-        StartCoroutine(GetPredictionResultFromBackend(fish.fishIndex)); //後端有魚的圖片
+        StartCoroutine(GetPredictionResultFromBackend(fish)); 
     }
 
-    IEnumerator GetPredictionResultFromBackend(int fishIndex)
+    IEnumerator GetPredictionResultFromBackend(Fish fish) //假裝從後端獲取預測結果
     {
         LoadingHandler.Instance.ShowLoadingScreen("魔法魚鉤辨識中...");
-        string url = fishRecognitionURL + PlayerPrefs.GetString("username", "NO_Name");
-        UnityWebRequest request = new UnityWebRequest(url, "POST");
-        string fishTypeName = fishList[fishIndex].fishType == 0 ? "銀龍魚" : "吳郭魚";
-        string JsonBody = JsonConvert.SerializeObject(new { image_path = $"/{fishTypeName}/" + fishList[fishIndex].fishSprite.texture.name + ".jpg" });
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(JsonBody);
-        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-        request.SetRequestHeader("Authorization", "Bearer " + PlayerPrefs.GetString("key", ""));
-        Debug.Log("Sending fish recognition request: " + JsonBody);
-        yield return request.SendWebRequest();
-        bool errorFlag = true;
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            // 處理成功的回應
-            string jsonResponse = request.downloadHandler.text;
-            Debug.Log("Fish recognition response: " + jsonResponse);
-            JObject responseObject = JObject.Parse(jsonResponse);
-            if ((bool)responseObject["success"])
-            {
-                errorFlag = false;
-                confidence = (int)((float)responseObject["confidence"] * 100);
-                predicTypeResult = (string)responseObject["predicted_class"] == "銀龍魚" ? 0 : 1;
-            }
-        }
+        yield return new WaitForSeconds(0.2f); // 模擬等待時間
+        confidence = fish.confidenceScore >= 0.5f ? (int)(fish.confidenceScore * 100) : (int)((1 - fish.confidenceScore) * 100);
+        predicTypeResult = fish.predictType;
 
-        if (errorFlag)
-        {
-            // 處理錯誤的回應
-            Debug.LogError("Fish recognition error: " + request.error);
-            LoadingHandler.Instance.ShowLoadingScreen("魚類識別失敗，請稍後再試。");
-            yield return new WaitForSeconds(2); // 等待2秒
-            Fish fish = hook.GetComponentInChildren<Fish>();
-            //把魚放走
-            fishCaughtPanel.SetActive(false); // 隱藏捕到魚的面板
-            currentFishIndex = -1; // 重置當前魚索引
-            if (fish != null)
-            {
-                fish.EnablePhysics(); // 恢復魚的物理效果
-                fish.isCatched = false; // 重置魚的捕捉狀態
-                fish.transform.SetParent(null); // 將魚物件從魚鉤中移除
-            }
-            state = 4;
-            LoadingHandler.Instance.HideLoadingScreen();
-            yield break;
-        }
+        
         //文字範例: 判定結果：銀龍魚\n信心：98%
         reconnitionOutcomeText.text = "判定結果：" + (predicTypeResult == 0 ? "銀龍魚" : "吳郭魚") + "\n信心：" + confidence + "%";
         state = 3; // 捕捉到魚(拉鋸中)
@@ -286,6 +244,7 @@ public class FishingGameManager : LevelManagerBase
                     fish.EnablePhysics(); // 恢復魚的物理效果
                     fish.isCatched = false; // 重置魚的捕捉狀態
                     fish.transform.SetParent(null); // 將魚物件從魚鉤中移除
+                    fish.ReStartFlash(); // 重新開始閃爍效果
                 }
                 state = 4;
             }

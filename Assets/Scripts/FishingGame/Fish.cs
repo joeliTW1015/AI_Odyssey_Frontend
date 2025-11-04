@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -12,6 +13,8 @@ public class Fish : MonoBehaviour
     [Header("Fish Info")]
     public int fishIndex;
     public int fishType; // 0: silverfish, 1: normalfish
+    public int predictType; // 0: silverfish, 1: normalfish
+    public float confidenceScore; //預測的信心分數 <0.5 表示錯誤預測
     [SerializeField] Sprite unknownFishSprite;
     [SerializeField] Sprite silverFishSprite;
     [SerializeField] Sprite normalFishSprite;
@@ -28,9 +31,48 @@ public class Fish : MonoBehaviour
         coll = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         isCatched = false;
-        transform.position = new Vector2(Random.Range(-targetRangeX, targetRangeX), Random.Range(targetRangeYMin, targetRangeYMax));
-        targetPosition = new Vector2(Random.Range(-targetRangeX, targetRangeX), Random.Range(targetRangeYMin, targetRangeYMax));
+        transform.position = new Vector2(UnityEngine.Random.Range(-targetRangeX, targetRangeX), UnityEngine.Random.Range(targetRangeYMin, targetRangeYMax));
+        targetPosition = new Vector2(UnityEngine.Random.Range(-targetRangeX, targetRangeX), UnityEngine.Random.Range(targetRangeYMin, targetRangeYMax));
         spriteRenderer.sprite = unknownFishSprite; // Set default sprite to unknown fish
+        confidenceScore = 0.5f + (LevelManager_02.trainingAccuracy / 30)  / 2f + UnityEngine.Random.Range(-0.2f, 0.2f);// Confidence score between 0 and 1.0
+        if (confidenceScore > 1f)
+        {
+            confidenceScore = 1f;
+        }
+        else if (confidenceScore < 0f)
+        {
+            confidenceScore = 0f;
+        }
+        Debug.Log($"Fish {fishIndex} of type {fishType} has confidence score {confidenceScore}");
+        if (confidenceScore >= 0.5f)
+        {
+            predictType = fishType; // correct prediction
+        }
+        else
+        {
+            predictType = 1 - fishType; // incorrect prediction
+        }
+
+        StartCoroutine(FlashSprite());
+    }
+
+    IEnumerator FlashSprite()
+    {
+        while (!isCatched)
+        {
+            spriteRenderer.sprite = unknownFishSprite;
+            spriteRenderer.color = new Color(1f, 1f, 1f, 1f); //opaque
+            float waitingTime = UnityEngine.Random.Range(0.2f, 0.5f);
+            yield return new WaitForSeconds(waitingTime);
+            spriteRenderer.sprite = predictType == 0 ? silverFishSprite : normalFishSprite;
+            spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f); //半透明
+            yield return new WaitForSeconds(waitingTime);
+        }
+    }
+    public void ReStartFlash()
+    {
+        StopAllCoroutines();
+        StartCoroutine(FlashSprite());
     }
 
     // Update is called once per frame
@@ -61,7 +103,7 @@ public class Fish : MonoBehaviour
 
         if (Vector2.Distance(transform.position, targetPosition) < 0.2f)
         {
-            targetPosition = new Vector2(Random.Range(-targetRangeX, targetRangeX), Random.Range(targetRangeYMin, targetRangeYMax));
+            targetPosition = new Vector2(UnityEngine.Random.Range(-targetRangeX, targetRangeX), UnityEngine.Random.Range(targetRangeYMin, targetRangeYMax));
         }
         float targetRotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         float currentRotation = transform.eulerAngles.z;
@@ -77,7 +119,7 @@ public class Fish : MonoBehaviour
             spriteRenderer.flipY = false;
         }
     }
-    
+
     public void ChangeSprite()
     {
         switch (fishType)
@@ -93,6 +135,7 @@ public class Fish : MonoBehaviour
                 break;
         }
     }
+    
 
     
 }
