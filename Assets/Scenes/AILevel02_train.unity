@@ -41602,7 +41602,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: dialogueSequence.lines.Array.data[5].speakingContent
-      value: "\u4E0D\u904E\u6CE8\u610F\uFF0C\u9B5A\u4E00\u65E6\u91E3\u4E0A\u4F86\u5C31\u4E0D\u80FD\u653E\u56DE\u53BB\uFF0C\u4E00\u6B21\u91E3\u9B5A\u53EA\u80FD\u91E3\u4E94\u96BB\uFF0C\u6211\u8B93\u4F60\u91E3\u5169\u6B21\uFF0C\u795D\u4F60\u597D\u904B\u90FD\u91E3\u5230\u9280\u9F8D\u9B5A\u3002"
+      value: "\u4E0D\u904E\u6CE8\u610F\uFF0C\u9B5A\u4E00\u65E6\u91E3\u4E0A\u4F86\u5C31\u4E0D\u80FD\u653E\u56DE\u53BB\uFF0C\u4E00\u6B21\u91E3\u9B5A\u53EA\u80FD\u91E31\u5206\u9418\uFF0C\u6211\u8B93\u4F60\u91E3\u5169\u6B21\uFF0C\u795D\u4F60\u597D\u904B\u90FD\u91E3\u5230\u9280\u9F8D\u9B5A\u3002"
       objectReference: {fileID: 0}
     - target: {fileID: 15045913467653498, guid: 206f21c683f682c49b7b8eecc73737a1, type: 3}
       propertyPath: dialogueSequence.lines.Array.data[6].speakingContent

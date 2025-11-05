@@ -33,7 +33,8 @@ public class FishingGameManager : LevelManagerBase
 
     [Header("Fishing Settings")]
     bool startFishing = false; // 是否開始釣魚
-    [SerializeField] int maxCatch = 10; // Maximum number of fish to catch
+    [SerializeField] float fishingDuration = 120f; // 釣魚持續時間
+    float elapsedTime = 0f; // 已經過的時間
     [SerializeField] float hookSwingSpeed = 2f; // Speed of the hook swinging left and right
     [SerializeField] float hookSwingRange = 0.5f; // Range of the hook swinging
     [SerializeField] float hookCatchSpeed = 5f; // Speed of the hook when catching fish
@@ -51,6 +52,7 @@ public class FishingGameManager : LevelManagerBase
     [SerializeField] GameObject resultPanel;
     [SerializeField] Image resultImage;
     [SerializeField] Image realFishImage;
+    [SerializeField] Text timerText;
     [Header("QTE Settings")]
     [SerializeField] GameObject qtePanel; // QTE面板
     [SerializeField] Button qteButton; // QTE按鈕
@@ -168,9 +170,25 @@ public class FishingGameManager : LevelManagerBase
 
     void IncreaseQTEProgress()
     {
+        if(state != 3) return; // 確保只有在拉鋸中狀態時才處理QTE按鈕
         qteProgress += qteProgressIncreaseSpeed;
     }
 
+    private void Update()
+    {
+        //keyboard input 
+        if (Input.GetKeyDown(KeyCode.Space) && !resultPanel.activeSelf)
+        {
+            if(state == 0)
+            {
+                CastTheHook();
+            }
+            else if (state == 3)
+            {
+                IncreaseQTEProgress();
+            }
+        }
+    }
 
     void FixedUpdate() //因為有物理運算move to
     {
@@ -289,21 +307,23 @@ public class FishingGameManager : LevelManagerBase
                     StartCoroutine(ShowResult(fish.fishType, fishList[currentFishIndex].fishSprite));
                     currentFishIndex = -1; // 重置當前魚索引
                     state = 0; // 重置狀態為魚線未下放
-                    if (currentCatchCount >= maxCatch)
-                    {
-                        // 捕到足夠的魚，結束釣魚
-                        if (!LevelManager_02.isSecondTimeEntered)
-                        {
-                            DialogueManager.Instance.StartDialogue(firstTimeEndDialogue); // 第一次結束釣魚的對話
-                        }
-                        else
-                        {
-                            DialogueManager.Instance.StartDialogue(SecondTimeEndDialogue); // 第二次結束釣魚的對話
-                        }
-                        startFishing = false; // 停止釣魚
-                    }
                 }
             }
+        }
+        timerText.text = "剩餘時間：" + (int)(fishingDuration - elapsedTime) + "秒";
+        elapsedTime += Time.deltaTime;
+        if (elapsedTime >= fishingDuration)
+        {
+            // 捕到足夠的魚，結束釣魚
+            if (!LevelManager_02.isSecondTimeEntered)
+            {
+                DialogueManager.Instance.StartDialogue(firstTimeEndDialogue); // 第一次結束釣魚的對話
+            }
+            else
+            {
+                DialogueManager.Instance.StartDialogue(SecondTimeEndDialogue); // 第二次結束釣魚的對話
+            }
+            startFishing = false; // 停止釣魚
         }
     }
 
